@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".activities.RegisteredCompaniesActivity">
+    tools:context=".activities.ContactsActivity">
 
     <ImageView
         android:id="@+id/imageViewBack"
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Registered Companies"
+        android:text="Contacts"
         android:textColor="@color/gray"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -32,7 +32,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -44,7 +44,7 @@ public class MyAccountActivity extends AppCompatActivity {
         });
 
         binding.buttonUpdateResume.setOnClickListener(view -> {
-            
+
         });
 
         binding.buttonDetails.setOnClickListener(view -> {

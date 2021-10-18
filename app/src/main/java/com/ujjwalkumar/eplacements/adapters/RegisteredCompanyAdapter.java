@@ -12,34 +12,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.activities.CompanyDetailsActivity;
-import com.ujjwalkumar.eplacements.models.UpcomingCompany;
+import com.ujjwalkumar.eplacements.models.RegisteredCompany;
 
 import java.util.ArrayList;
 
-public class UpcomingCompanyAdapter extends RecyclerView.Adapter<UpcomingCompanyAdapter.UpcomingCompanyViewHolder> {
+public class RegisteredCompanyAdapter extends RecyclerView.Adapter<RegisteredCompanyAdapter.RegisteredCompanyViewHolder> {
 
     Context context;
-    ArrayList<UpcomingCompany> al;
+    ArrayList<RegisteredCompany> al;
 
-    public UpcomingCompanyAdapter(Context context, ArrayList<UpcomingCompany> al) {
+    public RegisteredCompanyAdapter(Context context, ArrayList<RegisteredCompany> al) {
         this.context = context;
         this.al = al;
     }
 
     @NonNull
     @Override
-    public UpcomingCompanyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recyclerview_upcoming_companies, parent, false);
-        return new UpcomingCompanyViewHolder(view);
+    public RegisteredCompanyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.recyclerview_registered_companies, parent, false);
+        return new RegisteredCompanyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpcomingCompanyViewHolder holder, int position) {
-        UpcomingCompany obj = al.get(position);
+    public void onBindViewHolder(@NonNull RegisteredCompanyViewHolder holder, int position) {
+        RegisteredCompany obj = al.get(position);
         holder.textViewCompanyName.setText(obj.getName());
         holder.textViewJobProfile.setText(obj.getProfile());
         holder.textViewCTC.setText(obj.getCtc());
-        holder.textViewDeadline.setText(obj.getDeadline());
+        holder.textViewTimestamp.setText(obj.getTimestamp());
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, CompanyDetailsActivity.class);
@@ -54,16 +54,16 @@ public class UpcomingCompanyAdapter extends RecyclerView.Adapter<UpcomingCompany
         return al.size();
     }
 
-    public class UpcomingCompanyViewHolder extends RecyclerView.ViewHolder {
+    public class RegisteredCompanyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewCompanyName, textViewJobProfile, textViewCTC, textViewDeadline;
+        TextView textViewCompanyName, textViewJobProfile, textViewCTC, textViewTimestamp;
 
-        public UpcomingCompanyViewHolder(@NonNull View itemView) {
+        public RegisteredCompanyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewCompanyName = itemView.findViewById(R.id.textViewCompanyName);
             textViewJobProfile = itemView.findViewById(R.id.textViewJobProfile);
             textViewCTC = itemView.findViewById(R.id.textViewCTC);
-            textViewDeadline = itemView.findViewById(R.id.textViewDeadline);
+            textViewTimestamp = itemView.findViewById(R.id.textViewTimestamp);
         }
     }
 }

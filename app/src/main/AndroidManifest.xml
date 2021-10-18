@@ -16,7 +16,7 @@
             android:name=".activities.CompanyDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".activities.ContactsActivity"
             android:exported="false" />
         <activity
             android:name=".activities.RegisteredCompaniesActivity"

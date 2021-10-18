@@ -23,12 +23,32 @@ public class HomeActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         updateInformation();
 
+        binding.imageViewAccount.setOnClickListener(view -> {
+            startActivity(new Intent(this, MyAccountActivity.class));
+        });
+
         binding.layoutMenu1.setOnClickListener(view -> {
             startActivity(new Intent(this, UpcomingCompaniesActivity.class));
         });
 
         binding.layoutMenu2.setOnClickListener(view -> {
             startActivity(new Intent(this, RegisteredCompaniesActivity.class));
+        });
+
+        binding.layoutMenu3.setOnClickListener(view -> {
+            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+        });
+
+        binding.layoutMenu4.setOnClickListener(view -> {
+            startActivity(new Intent(this, RegisteredCompaniesActivity.class));
+        });
+
+        binding.layoutMenu5.setOnClickListener(view -> {
+            startActivity(new Intent(this, ContactsActivity.class));
+        });
+
+        binding.layoutMenu6.setOnClickListener(view -> {
+            startActivity(new Intent(this, HelpActivity.class));
         });
     }
 
