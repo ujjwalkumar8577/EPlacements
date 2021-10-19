@@ -64,7 +64,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void signupStudent(String regno, String password) {
         binding.animationViewLoading.playAnimation();
-        String url = getString(R.string.base_url) + "student/loginStudent";
+        String url = getString(R.string.base_url) + "student/registerStudent";
         JSONObject postData = new JSONObject();
         try {
             postData.put("reg_no", regno);

@@ -21,6 +21,7 @@ public class MyAccountActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
+        showInformation();
 
         binding.imageViewBack.setOnClickListener(view -> {
             super.onBackPressed();
@@ -32,7 +33,11 @@ public class MyAccountActivity extends AppCompatActivity {
             in.setAction(Intent.ACTION_VIEW);
             in.setClass(getApplicationContext(), LoginActivity.class);
             startActivity(in);
-            finish();
+            finishAffinity();
+        });
+
+        binding.textViewChangePassword.setOnClickListener(view -> {
+
         });
 
         binding.imageViewEdit.setOnClickListener(view -> {
@@ -50,5 +55,10 @@ public class MyAccountActivity extends AppCompatActivity {
         binding.buttonDetails.setOnClickListener(view -> {
             startActivity(new Intent(this, CompleteProfileActivity.class));
         });
+    }
+
+    private void showInformation() {
+        binding.textViewName.setText(user.getString("name", ""));
+
     }
 }

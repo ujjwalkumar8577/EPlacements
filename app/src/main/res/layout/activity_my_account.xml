@@ -53,23 +53,23 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:padding="24dp"
-        android:gravity="start"
         android:background="@drawable/bg_input"
+        android:gravity="start"
         android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPhoto">
+        app:layout_constraintTop_toBottomOf="@+id/textViewName">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Resume"
-            android:textStyle="bold"
+            android:textColor="@color/gray"
             android:textSize="16sp"
-            android:textColor="@color/gray"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,22 +81,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/bg_button_small"
-                android:textColor="@color/white"
                 android:layout_weight="1"
+                android:background="@drawable/bg_button_small"
                 android:text="View"
-                android:textSize="18sp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/buttonUpdateResume"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/bg_button_small"
-                android:textColor="@color/white"
                 android:layout_weight="1"
+                android:background="@drawable/bg_button_small"
                 android:text="Update"
-                android:textSize="18sp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -122,9 +122,35 @@
         android:text="Logout"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textViewChangePassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonDetails" />
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Student Name"
+        android:textStyle="bold"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPhoto" />
+
+    <TextView
+        android:id="@+id/textViewChangePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Change Password"
+        android:textStyle="bold"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogout"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

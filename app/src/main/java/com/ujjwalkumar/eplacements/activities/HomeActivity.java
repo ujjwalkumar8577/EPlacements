@@ -21,7 +21,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
-        updateInformation();
+        showInformation();
 
         binding.imageViewAccount.setOnClickListener(view -> {
             startActivity(new Intent(this, MyAccountActivity.class));
@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void updateInformation() {
+    private void showInformation() {
         binding.textViewName.setText(user.getString("name", ""));
         binding.textViewDegreeCourse.setText(user.getString("course", "") + " - " + user.getString("branch", ""));
         binding.textViewCredits.setText(user.getString("credits", ""));
