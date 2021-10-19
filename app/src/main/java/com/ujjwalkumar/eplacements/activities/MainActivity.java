@@ -30,15 +30,12 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     String token = user.getString("token", "");
                     String type = user.getString("type", "");
-                    Intent in = new Intent();
-                    in.setAction(Intent.ACTION_VIEW);
                     if(token.equals(""))
-                        in.setClass(getApplicationContext(), LoginActivity.class);
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     else if(type.equals("admin"))
-                        in.setClass(getApplicationContext(), AdminHomeActivity.class);
+                        startActivity(new Intent(MainActivity.this, AdminHomeActivity.class));
                     else
-                        in.setClass(getApplicationContext(), HomeActivity.class);
-                    startActivity(in);
+                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
                     finish();
                 });
             }

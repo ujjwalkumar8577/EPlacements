@@ -79,29 +79,33 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            String name = response.getJSONObject("user").getString("name");
-                            String regno = response.getJSONObject("user").getString("reg_no");
-                            String course = response.getJSONObject("user").getString("course");
-                            String branch = response.getJSONObject("user").getString("branch");
-                            String status = response.getJSONObject("user").getString("status");
-                            String credits = response.getJSONObject("user").getString("credits");
-                            String token = response.getString("token");
-                            user.edit().putString("name", name).apply();
-                            user.edit().putString("id", regno).apply();
-                            user.edit().putString("course", course).apply();
-                            user.edit().putString("branch", branch).apply();
-                            user.edit().putString("status", status).apply();
-                            user.edit().putString("credits", credits).apply();
-                            user.edit().putString("token", token).apply();
-                            user.edit().putString("type", "student").apply();
+                            if(response.getBoolean("success")) {
+                                String name = response.getJSONObject("user").getString("name");
+                                String regno = response.getJSONObject("user").getString("reg_no");
+                                String course = response.getJSONObject("user").getString("course");
+                                String branch = response.getJSONObject("user").getString("branch");
+                                String status = response.getJSONObject("user").getString("status");
+                                String credits = response.getJSONObject("user").getString("credits");
+                                String token = response.getString("token");
+                                user.edit().putString("name", name).apply();
+                                user.edit().putString("id", regno).apply();
+                                user.edit().putString("course", course).apply();
+                                user.edit().putString("branch", branch).apply();
+                                user.edit().putString("status", status).apply();
+                                user.edit().putString("credits", credits).apply();
+                                user.edit().putString("token", token).apply();
+                                user.edit().putString("type", "student").apply();
+                                binding.animationViewLoading.pauseAnimation();
+                                Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+
+                                Intent in = new Intent();
+                                in.setAction(Intent.ACTION_VIEW);
+                                in.setClass(getApplicationContext(), HomeActivity.class);
+                                startActivity(in);
+                                finish();
+                            }
                             binding.animationViewLoading.pauseAnimation();
-
-                            Intent in = new Intent();
-                            in.setAction(Intent.ACTION_VIEW);
-                            in.setClass(getApplicationContext(), HomeActivity.class);
-                            startActivity(in);
-                            finish();
-
+                            Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

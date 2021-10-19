@@ -23,6 +23,10 @@ public class CompanyDetailsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         loadRecyclerView();
+
+        binding.imageViewBack.setOnClickListener(view -> {
+            super.onBackPressed();
+        });
     }
 
     private void loadRecyclerView() {

@@ -81,22 +81,25 @@ public class AdminLoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            String name = response.getJSONObject("user").getString("name");
-                            String email = response.getJSONObject("user").getString("email");
-//                            String photo = response.getJSONObject("user").getJSONObject("photo").toString();
-                            String token = response.getString("token");
-                            user.edit().putString("name", name).apply();
-                            user.edit().putString("id", email).apply();
-                            user.edit().putString("token", token).apply();
-                            user.edit().putString("type", "admin").apply();
+                            if(response.getBoolean("success")) {
+                                String name = response.getJSONObject("user").getString("name");
+                                String email = response.getJSONObject("user").getString("email");
+                                String token = response.getString("token");
+                                user.edit().putString("name", name).apply();
+                                user.edit().putString("id", email).apply();
+                                user.edit().putString("token", token).apply();
+                                user.edit().putString("type", "admin").apply();
+                                binding.animationViewLoading.pauseAnimation();
+                                Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+
+                                Intent in = new Intent();
+                                in.setAction(Intent.ACTION_VIEW);
+                                in.setClass(getApplicationContext(), AdminHomeActivity.class);
+                                startActivity(in);
+                                finish();
+                            }
                             binding.animationViewLoading.pauseAnimation();
-
-                            Intent in = new Intent();
-                            in.setAction(Intent.ACTION_VIEW);
-                            in.setClass(getApplicationContext(), AdminHomeActivity.class);
-                            startActivity(in);
-                            finish();
-
+                            Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
