@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -90,39 +88,31 @@ public class MyAccountActivity extends AppCompatActivity {
         JSONObject postData = new JSONObject();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, postData,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if(response.getBoolean("success")) {
-                                userObj = response.getJSONObject("user");
-                                JSONArray photo = response.getJSONObject("user").getJSONObject("photo").getJSONObject("data").getJSONArray("data");
-                                binding.animationViewLoading.pauseAnimation();
-                                binding.animationViewLoading.setVisibility(View.GONE);
-                                byte[] imageBytes = new byte[photo.length()];
-                                for(int i=0; i<photo.length(); i++) {
-                                    imageBytes[i] = (byte)photo.getInt(i);
-                                }
-                                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                                binding.imageViewPhoto.setImageBitmap(bmp);
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            userObj = response.getJSONObject("user");
+                            JSONArray photo = response.getJSONObject("user").getJSONObject("photo").getJSONObject("data").getJSONArray("data");
+                            binding.animationViewLoading.pauseAnimation();
+                            binding.animationViewLoading.setVisibility(View.GONE);
+                            byte[] imageBytes = new byte[photo.length()];
+                            for(int i=0; i<photo.length(); i++) {
+                                imageBytes[i] = (byte)photo.getInt(i);
                             }
-                            binding.animationViewLoading.pauseAnimation();
-                            Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            binding.animationViewLoading.pauseAnimation();
-                            e.printStackTrace();
+                            Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            binding.imageViewPhoto.setImageBitmap(bmp);
                         }
+                        binding.animationViewLoading.pauseAnimation();
+                        Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        binding.animationViewLoading.pauseAnimation();
+                        e.printStackTrace();
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MyAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
+                error -> Toast.makeText(MyAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+                Map<String,String> params = new HashMap<>();
                 params.put("Authorization", user.getString("token", ""));
                 return params;
             }

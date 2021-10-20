@@ -27,6 +27,10 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(this, MyAccountActivity.class));
         });
 
+        binding.imageViewNotice.setOnClickListener(view -> {
+            startActivity(new Intent(this, NoticesActivity.class));
+        });
+
         binding.layoutMenu1.setOnClickListener(view -> {
             startActivity(new Intent(this, UpcomingCompaniesActivity.class));
         });

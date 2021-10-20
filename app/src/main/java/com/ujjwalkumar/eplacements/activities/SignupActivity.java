@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
@@ -75,51 +73,43 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if(response.getBoolean("success")) {
-                                String name = response.getJSONObject("user").getString("name");
-                                String regno = response.getJSONObject("user").getString("reg_no");
-                                String course = response.getJSONObject("user").getString("course");
-                                String branch = response.getJSONObject("user").getString("branch");
-                                String status = response.getJSONObject("user").getString("status");
-                                String credits = response.getJSONObject("user").getString("credits");
-                                String token = response.getString("token");
-                                user.edit().putString("name", name).apply();
-                                user.edit().putString("id", regno).apply();
-                                user.edit().putString("course", course).apply();
-                                user.edit().putString("branch", branch).apply();
-                                user.edit().putString("status", status).apply();
-                                user.edit().putString("credits", credits).apply();
-                                user.edit().putString("token", token).apply();
-                                user.edit().putString("type", "student").apply();
-                                binding.animationViewLoading.pauseAnimation();
-                                Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-
-                                Intent in = new Intent();
-                                in.setAction(Intent.ACTION_VIEW);
-                                in.setClass(getApplicationContext(), HomeActivity.class);
-                                startActivity(in);
-                                finish();
-                            }
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            String name = response.getJSONObject("user").getString("name");
+                            String regno1 = response.getJSONObject("user").getString("reg_no");
+                            String course = response.getJSONObject("user").getString("course");
+                            String branch = response.getJSONObject("user").getString("branch");
+                            String status = response.getJSONObject("user").getString("status");
+                            String credits = response.getJSONObject("user").getString("credits");
+                            String token = response.getString("token");
+                            user.edit().putString("name", name).apply();
+                            user.edit().putString("id", regno1).apply();
+                            user.edit().putString("course", course).apply();
+                            user.edit().putString("branch", branch).apply();
+                            user.edit().putString("status", status).apply();
+                            user.edit().putString("credits", credits).apply();
+                            user.edit().putString("token", token).apply();
+                            user.edit().putString("type", "student").apply();
                             binding.animationViewLoading.pauseAnimation();
                             Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+
+                            Intent in = new Intent();
+                            in.setAction(Intent.ACTION_VIEW);
+                            in.setClass(getApplicationContext(), HomeActivity.class);
+                            startActivity(in);
+                            finish();
                         }
+                        binding.animationViewLoading.pauseAnimation();
+                        Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(SignupActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
+                error -> Toast.makeText(SignupActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+                Map<String,String> params = new HashMap<>();
                 params.put("Content-Type","application/json");
                 return params;
             }

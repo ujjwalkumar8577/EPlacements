@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
@@ -77,43 +75,35 @@ public class AdminLoginActivity extends AppCompatActivity {
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if(response.getBoolean("success")) {
-                                String name = response.getJSONObject("user").getString("name");
-                                String email = response.getJSONObject("user").getString("email");
-                                String token = response.getString("token");
-                                user.edit().putString("name", name).apply();
-                                user.edit().putString("id", email).apply();
-                                user.edit().putString("token", token).apply();
-                                user.edit().putString("type", "admin").apply();
-                                binding.animationViewLoading.pauseAnimation();
-                                Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-
-                                Intent in = new Intent();
-                                in.setAction(Intent.ACTION_VIEW);
-                                in.setClass(getApplicationContext(), AdminHomeActivity.class);
-                                startActivity(in);
-                                finish();
-                            }
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            String name = response.getJSONObject("user").getString("name");
+                            String email1 = response.getJSONObject("user").getString("email");
+                            String token = response.getString("token");
+                            user.edit().putString("name", name).apply();
+                            user.edit().putString("id", email1).apply();
+                            user.edit().putString("token", token).apply();
+                            user.edit().putString("type", "admin").apply();
                             binding.animationViewLoading.pauseAnimation();
                             Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+
+                            Intent in = new Intent();
+                            in.setAction(Intent.ACTION_VIEW);
+                            in.setClass(getApplicationContext(), AdminHomeActivity.class);
+                            startActivity(in);
+                            finish();
                         }
+                        binding.animationViewLoading.pauseAnimation();
+                        Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AdminLoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
+                error -> Toast.makeText(AdminLoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+                Map<String,String> params = new HashMap<>();
                 params.put("Content-Type","application/json");
                 return params;
             }
