@@ -38,8 +38,8 @@ public class UpcomingCompanyAdapter extends RecyclerView.Adapter<UpcomingCompany
         UpcomingCompany obj = al.get(position);
         holder.textViewCompanyName.setText(obj.getName());
         holder.textViewJobProfile.setText(obj.getProfile());
-        holder.textViewCTC.setText(obj.getCtc());
-        holder.textViewDeadline.setText(obj.getDeadline());
+        holder.textViewCTC.setText(obj.getCtc() + " LPA");
+        holder.textViewDeadline.setText(obj.getTimeString());
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, CompanyDetailsActivity.class);

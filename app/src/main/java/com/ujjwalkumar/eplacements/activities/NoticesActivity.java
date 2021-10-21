@@ -49,9 +49,8 @@ public class NoticesActivity extends AppCompatActivity {
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
         String url = getString(R.string.base_url) + "getNotice";
-        JSONObject postData = new JSONObject();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, postData,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
@@ -75,7 +74,6 @@ public class NoticesActivity extends AppCompatActivity {
                             binding.animationViewLoading.setVisibility(View.GONE);
                         }
                         binding.animationViewLoading.pauseAnimation();
-                        Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
                         e.printStackTrace();

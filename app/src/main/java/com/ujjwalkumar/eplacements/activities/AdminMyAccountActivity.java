@@ -1,40 +1,37 @@
 package com.ujjwalkumar.eplacements.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.adapters.UpcomingCompanyAdapter;
-import com.ujjwalkumar.eplacements.databinding.ActivityUpcomingCompaniesBinding;
-import com.ujjwalkumar.eplacements.models.UpcomingCompany;
+import com.ujjwalkumar.eplacements.databinding.ActivityAdminMyAccountBinding;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpcomingCompaniesActivity extends AppCompatActivity {
+public class AdminMyAccountActivity extends AppCompatActivity {
 
-    private ArrayList<UpcomingCompany> al;
-    private ActivityUpcomingCompaniesBinding binding;
+    private ActivityAdminMyAccountBinding binding;
     private SharedPreferences user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUpcomingCompaniesBinding.inflate(getLayoutInflater());
+        binding = ActivityAdminMyAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
@@ -43,40 +40,54 @@ public class UpcomingCompaniesActivity extends AppCompatActivity {
         binding.imageViewBack.setOnClickListener(view -> {
             super.onBackPressed();
         });
+
+        binding.buttonLogout.setOnClickListener(view -> {
+            user.edit().clear().apply();
+            Intent in = new Intent();
+            in.setAction(Intent.ACTION_VIEW);
+            in.setClass(getApplicationContext(), AdminLoginActivity.class);
+            startActivity(in);
+            finishAffinity();
+        });
+
+        binding.textViewChangePassword.setOnClickListener(view -> {
+
+        });
+
+        binding.imageViewEdit.setOnClickListener(view -> {
+
+        });
     }
 
     private void showInformation() {
+        binding.textViewName.setText(user.getString("name", ""));
+        binding.textViewEmail.setText(user.getString("id", ""));
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
-        String url = getString(R.string.base_url) + "currentOpening";
+        String url = getString(R.string.base_url);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray notices = response.getJSONArray("company");
-                            al = new ArrayList<>();
-                            for(int i=0; i< notices.length(); i++) {
-                                JSONObject obj = notices.getJSONObject(i);
-
-                                UpcomingCompany upcomingCompany = new UpcomingCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), obj.getLong("reg_deadline"));
-                                al.add(upcomingCompany);
-                            }
-
-                            UpcomingCompanyAdapter adapter = new UpcomingCompanyAdapter(UpcomingCompaniesActivity.this, al);
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(UpcomingCompaniesActivity.this));
-                            binding.recyclerView.setAdapter(adapter);
-
+                            JSONArray photo = response.getJSONObject("user").getJSONObject("photo").getJSONObject("data").getJSONArray("data");
                             binding.animationViewLoading.pauseAnimation();
                             binding.animationViewLoading.setVisibility(View.GONE);
+                            byte[] imageBytes = new byte[photo.length()];
+                            for(int i=0; i<photo.length(); i++) {
+                                imageBytes[i] = (byte)photo.getInt(i);
+                            }
+                            Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            binding.imageViewPhoto.setImageBitmap(bmp);
                         }
                         binding.animationViewLoading.pauseAnimation();
+                        Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(UpcomingCompaniesActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(AdminMyAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

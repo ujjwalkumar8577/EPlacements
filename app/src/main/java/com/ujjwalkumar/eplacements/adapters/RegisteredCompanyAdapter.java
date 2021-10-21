@@ -38,8 +38,8 @@ public class RegisteredCompanyAdapter extends RecyclerView.Adapter<RegisteredCom
         RegisteredCompany obj = al.get(position);
         holder.textViewCompanyName.setText(obj.getName());
         holder.textViewJobProfile.setText(obj.getProfile());
-        holder.textViewCTC.setText(obj.getCtc());
-        holder.textViewTimestamp.setText(obj.getTimestamp());
+        holder.textViewCTC.setText(obj.getCtc() + " LPA");
+        holder.textViewTimestamp.setText(obj.getTimeString());
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, CompanyDetailsActivity.class);

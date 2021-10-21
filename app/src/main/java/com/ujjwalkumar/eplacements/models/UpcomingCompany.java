@@ -1,14 +1,19 @@
 package com.ujjwalkumar.eplacements.models;
 
-public class UpcomingCompany {
-    String id, name, profile, ctc, deadline;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-    public UpcomingCompany(String id, String name, String profile, String ctc, String deadline) {
+public class UpcomingCompany {
+    String id, name, profile;
+    double ctc;
+    long deadline;
+
+    public UpcomingCompany(String id, String name, String profile, double ctc, long deadline) {
         this.id = id;
         this.name = name;
         this.profile = profile;
         this.ctc = ctc;
-        this.deadline = "Deadline: " + deadline;
+        this.deadline = deadline;
     }
 
     public String getId() {
@@ -35,19 +40,25 @@ public class UpcomingCompany {
         this.profile = profile;
     }
 
-    public String getCtc() {
+    public double getCtc() {
         return ctc;
     }
 
-    public void setCtc(String ctc) {
+    public void setCtc(double ctc) {
         this.ctc = ctc;
     }
 
-    public String getDeadline() {
+    public long getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(long deadline) {
         this.deadline = deadline;
+    }
+
+    public String getTimeString() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(deadline);
+        return "Deadline : " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(cal.getTime());
     }
 }

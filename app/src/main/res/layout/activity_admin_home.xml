@@ -254,7 +254,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Add Notice"
+            android:text="Announce Results"
             android:textColor="@color/gray"
             android:textStyle="bold" />
     </LinearLayout>
@@ -284,9 +284,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="View Notices"
+            android:text="Solve Grievances"
             android:textColor="@color/gray"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewNotice"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bellempty" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
