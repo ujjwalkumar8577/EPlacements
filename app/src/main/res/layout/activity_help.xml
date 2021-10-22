@@ -54,7 +54,7 @@
         android:ems="10"
         android:hint="Message"
         android:textSize="18sp"
-        android:inputType="textLongMessage"
+        android:inputType="textMultiLine"
         android:textColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

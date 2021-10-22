@@ -45,6 +45,7 @@ public class UpcomingCompanyAdapter extends RecyclerView.Adapter<UpcomingCompany
             Intent intent = new Intent(context, CompanyDetailsActivity.class);
             intent.putExtra("name", obj.getName());
             intent.putExtra("id", obj.getId());
+            intent.putExtra("registered", false);
             context.startActivity(intent);
         });
     }

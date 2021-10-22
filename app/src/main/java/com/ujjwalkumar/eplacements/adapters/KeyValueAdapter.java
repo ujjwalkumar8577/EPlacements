@@ -1,11 +1,14 @@
 package com.ujjwalkumar.eplacements.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +39,18 @@ public class KeyValueAdapter extends RecyclerView.Adapter<KeyValueAdapter.KeyVal
         Pair<String, String> obj = al.get(position);
         holder.textViewKey.setText(obj.first);
         holder.textViewValue.setText(obj.second);
+
+        if(obj.first.contains("Link")) {
+            holder.textViewValue.setTextColor(context.getResources().getColor(R.color.blue));
+            holder.textViewValue.setOnClickListener(view -> {
+                String url = obj.second;
+                if (url.startsWith("https://") || url.startsWith("http://")) {
+                    Uri uri = Uri.parse(url);
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }else
+                    Toast.makeText(context, "Invalid Url", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     @Override

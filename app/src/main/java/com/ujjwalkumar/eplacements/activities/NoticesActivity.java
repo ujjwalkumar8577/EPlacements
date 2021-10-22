@@ -60,9 +60,9 @@ public class NoticesActivity extends AppCompatActivity {
                                 JSONObject obj = notices.getJSONObject(i);
                                 String title = "Not available";
                                 if(obj.has("title"))
-                                    title = obj.getString("content");
+                                    title = obj.getString("title");
 
-                                Notice notice = new Notice(title, obj.getString("content"), obj.getLong("time"));
+                                Notice notice = new Notice(title, obj.getString("content"), obj.getLong("timestamp"));
                                 al.add(notice);
                             }
 

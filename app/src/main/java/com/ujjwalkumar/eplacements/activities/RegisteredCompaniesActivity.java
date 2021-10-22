@@ -45,20 +45,6 @@ public class RegisteredCompaniesActivity extends AppCompatActivity {
         });
     }
 
-//    private void loadRecyclerView() {
-//        al = new ArrayList<>();
-//        al.add(new RegisteredCompany("1", "Google Inc", "SDE I", "40 LPA", "21/10/2021 11:59 PM"));
-//        al.add(new RegisteredCompany("2","Amazon", "SDE I", "32 LPA", "10/10/2021 11:59 PM"));
-//        al.add(new RegisteredCompany("3","Myntra", "Business Analyst", "12 LPA", "26/10/2021 11:59 PM"));
-//        al.add(new RegisteredCompany("4","Facebook", "Technology Analyst", "18 LPA", "18/10/2021 11:59 PM"));
-//        al.add(new RegisteredCompany("5","Tata Motors", "Junior Engineer", "9 LPA", "29/10/2021 11:59 PM"));
-//        al.add(new RegisteredCompany("6","Trilogy Innovations", "Software Developer", "30.5 LPA", "12/10/2021 11:59 PM"));
-//
-//        RegisteredCompanyAdapter adapter = new RegisteredCompanyAdapter(this, al);
-//        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        binding.recyclerView.setAdapter(adapter);
-//    }
-
     private void showInformation() {
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
@@ -68,12 +54,13 @@ public class RegisteredCompaniesActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray notices = response.getJSONArray("company");
+                            JSONArray notices = response.getJSONArray("companies");
                             al = new ArrayList<>();
                             for(int i=0; i< notices.length(); i++) {
-                                JSONObject obj = notices.getJSONObject(i);
+                                JSONObject obj = notices.getJSONObject(i).getJSONObject("company");
+                                long timestamp = notices.getJSONObject(i).getLong("timestamp");
 
-                                RegisteredCompany registeredCompany = new RegisteredCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), obj.getLong("timestamp"));
+                                RegisteredCompany registeredCompany = new RegisteredCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), timestamp);
                                 al.add(registeredCompany);
                             }
 

@@ -17,6 +17,7 @@ import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityAdminAddCompanyBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,7 +82,7 @@ public class AdminAddCompanyActivity extends AppCompatActivity {
                                                         } else binding.editTextMin12.setError("Required Field");
                                                     } else binding.editTextMin10.setError("Required Field");
                                                 } else binding.editTextMinCpi.setError("Required Field");
-                                            } else Toast.makeText(AdminAddCompanyActivity.this, "Select registration deadline", Toast.LENGTH_SHORT).show();;
+                                            } else Toast.makeText(AdminAddCompanyActivity.this, "Select registration deadline", Toast.LENGTH_SHORT).show();
                                         } else Toast.makeText(AdminAddCompanyActivity.this, "Select allowed branches", Toast.LENGTH_SHORT).show();
                                     } else binding.editTextCtc.setError("Required field");
                                 } else binding.editTextProcess.setError("Required field");
@@ -214,7 +215,7 @@ public class AdminAddCompanyActivity extends AppCompatActivity {
             postData.put("provision_ppo", ppo);
             postData.put("process", process);
             postData.put("ctc", ctc);
-            postData.put("allowed_branches", set.toArray());
+            postData.put("allowed_branches", new JSONArray(set));
             postData.put("reg_deadline", cal.getTimeInMillis());
             postData.put("company_link", link);
             postData.put("eligibility_criteria", eligibility);

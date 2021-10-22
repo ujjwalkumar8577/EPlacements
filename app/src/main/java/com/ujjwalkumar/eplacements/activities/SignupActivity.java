@@ -98,7 +98,7 @@ public class SignupActivity extends AppCompatActivity {
                             in.setAction(Intent.ACTION_VIEW);
                             in.setClass(getApplicationContext(), HomeActivity.class);
                             startActivity(in);
-                            finish();
+                            finishAffinity();
                         }
                         binding.animationViewLoading.pauseAnimation();
                         Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();

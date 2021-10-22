@@ -92,7 +92,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                             in.setAction(Intent.ACTION_VIEW);
                             in.setClass(getApplicationContext(), AdminHomeActivity.class);
                             startActivity(in);
-                            finish();
+                            finishAffinity();
                         }
                         binding.animationViewLoading.pauseAnimation();
                         Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
