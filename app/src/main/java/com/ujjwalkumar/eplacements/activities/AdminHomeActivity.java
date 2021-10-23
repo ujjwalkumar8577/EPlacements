@@ -40,7 +40,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu3.setOnClickListener(view -> {
-            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+            startActivity(new Intent(this, AdminManageStudentsActivity.class));
         });
 
         binding.layoutMenu4.setOnClickListener(view -> {

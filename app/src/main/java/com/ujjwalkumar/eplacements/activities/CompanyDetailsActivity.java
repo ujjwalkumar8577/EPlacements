@@ -48,7 +48,7 @@ public class CompanyDetailsActivity extends AppCompatActivity {
         id = getIntent().getStringExtra("id");
         isRegistered = getIntent().getBooleanExtra("registered", false);
         agreed = false;
-        if(isRegistered)
+        if(isRegistered || user.getString("type", "").equals("admin"))
             binding.buttonRegister.setVisibility(View.GONE);
         showInformation();
 
@@ -112,14 +112,14 @@ public class CompanyDetailsActivity extends AppCompatActivity {
                             KeyValueAdapter adapter = new KeyValueAdapter(this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
                             binding.recyclerView.setAdapter(adapter);
-
-                            binding.animationViewLoading.pauseAnimation();
-                            binding.animationViewLoading.setVisibility(View.GONE);
                         }
+                        else
+                            Toast.makeText(CompanyDetailsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
-                        Toast.makeText(CompanyDetailsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },
@@ -152,11 +152,12 @@ public class CompanyDetailsActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
                 response -> {
                     try {
-//                        if(response.getBoolean("success")) { }
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         Toast.makeText(CompanyDetailsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },

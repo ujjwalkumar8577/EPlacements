@@ -80,10 +80,13 @@ public class AdminMyAccountActivity extends AppCompatActivity {
                             Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                             binding.imageViewPhoto.setImageBitmap(bmp);
                         }
+                        else
+                            Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
-                        Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginStudent(String regno, String password) {
+        binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
         String url = getString(R.string.base_url) + "student/loginStudent";
         JSONObject postData = new JSONObject();
@@ -104,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                             user.edit().putString("token", token).apply();
                             user.edit().putString("type", "student").apply();
                             binding.animationViewLoading.pauseAnimation();
+                            binding.animationViewLoading.setVisibility(View.GONE);
                             Toast.makeText(LoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
 
                             Intent in = new Intent();
@@ -112,9 +115,13 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(in);
                             finish();
                         }
+                        else
+                            Toast.makeText(LoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
-                        Toast.makeText(LoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
+                        binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },

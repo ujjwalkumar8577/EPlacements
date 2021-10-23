@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +64,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     }
 
     private void loginAdmin(String email, String password) {
+        binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
         String url = getString(R.string.base_url) + "admin/loginAdmin";
         JSONObject postData = new JSONObject();
@@ -86,6 +88,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                             user.edit().putString("token", token).apply();
                             user.edit().putString("type", "admin").apply();
                             binding.animationViewLoading.pauseAnimation();
+                            binding.animationViewLoading.setVisibility(View.GONE);
                             Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
 
                             Intent in = new Intent();
@@ -94,9 +97,13 @@ public class AdminLoginActivity extends AppCompatActivity {
                             startActivity(in);
                             finishAffinity();
                         }
+                        else
+                            Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
-                        Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
+                        binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },

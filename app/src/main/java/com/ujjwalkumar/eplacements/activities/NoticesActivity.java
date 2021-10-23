@@ -69,13 +69,14 @@ public class NoticesActivity extends AppCompatActivity {
                             NoticeAdapter adapter = new NoticeAdapter(NoticesActivity.this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(NoticesActivity.this));
                             binding.recyclerView.setAdapter(adapter);
-
-                            binding.animationViewLoading.pauseAnimation();
-                            binding.animationViewLoading.setVisibility(View.GONE);
                         }
+                        else
+                            Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },

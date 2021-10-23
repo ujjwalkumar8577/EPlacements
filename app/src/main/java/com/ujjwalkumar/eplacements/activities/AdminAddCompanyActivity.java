@@ -235,7 +235,6 @@ public class AdminAddCompanyActivity extends AppCompatActivity {
                     try {
                         if(response.getBoolean("success")) {
                             initializeFields();
-                            Toast.makeText(AdminAddCompanyActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                         Toast.makeText(AdminAddCompanyActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {

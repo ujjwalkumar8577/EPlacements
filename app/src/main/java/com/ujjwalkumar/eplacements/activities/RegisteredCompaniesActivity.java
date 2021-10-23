@@ -54,12 +54,11 @@ public class RegisteredCompaniesActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray notices = response.getJSONArray("companies");
+                            JSONArray companies = response.getJSONArray("companies");
                             al = new ArrayList<>();
-                            for(int i=0; i< notices.length(); i++) {
-                                JSONObject obj = notices.getJSONObject(i).getJSONObject("company");
-                                long timestamp = notices.getJSONObject(i).getLong("timestamp");
-
+                            for(int i=0; i< companies.length(); i++) {
+                                JSONObject obj = companies.getJSONObject(i).getJSONObject("company");
+                                long timestamp = companies.getJSONObject(i).getLong("timestamp");
                                 RegisteredCompany registeredCompany = new RegisteredCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), timestamp);
                                 al.add(registeredCompany);
                             }
@@ -67,13 +66,14 @@ public class RegisteredCompaniesActivity extends AppCompatActivity {
                             RegisteredCompanyAdapter adapter = new RegisteredCompanyAdapter(RegisteredCompaniesActivity.this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(RegisteredCompaniesActivity.this));
                             binding.recyclerView.setAdapter(adapter);
-
-                            binding.animationViewLoading.pauseAnimation();
-                            binding.animationViewLoading.setVisibility(View.GONE);
                         }
+                        else
+                            Toast.makeText(RegisteredCompaniesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },

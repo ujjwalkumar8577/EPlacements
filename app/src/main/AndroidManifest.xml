@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EPlacements">
         <activity
+            android:name=".activities.AdminManageStudentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AdminAddCompanyActivity"
             android:exported="false" />
         <activity

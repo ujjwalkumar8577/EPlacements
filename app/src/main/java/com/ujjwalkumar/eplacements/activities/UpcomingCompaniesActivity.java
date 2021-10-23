@@ -54,11 +54,10 @@ public class UpcomingCompaniesActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray notices = response.getJSONArray("company");
+                            JSONArray companies = response.getJSONArray("company");
                             al = new ArrayList<>();
-                            for(int i=0; i< notices.length(); i++) {
-                                JSONObject obj = notices.getJSONObject(i);
-
+                            for(int i=0; i< companies.length(); i++) {
+                                JSONObject obj = companies.getJSONObject(i);
                                 UpcomingCompany upcomingCompany = new UpcomingCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), obj.getLong("reg_deadline"));
                                 al.add(upcomingCompany);
                             }
@@ -66,13 +65,14 @@ public class UpcomingCompaniesActivity extends AppCompatActivity {
                             UpcomingCompanyAdapter adapter = new UpcomingCompanyAdapter(UpcomingCompaniesActivity.this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(UpcomingCompaniesActivity.this));
                             binding.recyclerView.setAdapter(adapter);
-
-                            binding.animationViewLoading.pauseAnimation();
-                            binding.animationViewLoading.setVisibility(View.GONE);
                         }
+                        else
+                            Toast.makeText(UpcomingCompaniesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },

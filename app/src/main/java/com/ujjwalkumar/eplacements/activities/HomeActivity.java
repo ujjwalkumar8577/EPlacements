@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -61,6 +62,10 @@ public class HomeActivity extends AppCompatActivity {
         binding.textViewDegreeCourse.setText(user.getString("course", "") + " - " + user.getString("branch", ""));
         binding.textViewCredits.setText(user.getString("credits", ""));
         binding.textViewStatus.setText(getStatus(user.getString("status", "")));
+        if(user.getString("status", "").equals("registered") || user.getString("status", "").equals("unverified"))
+            binding.imageViewVerified.setVisibility(View.GONE);
+        else
+            binding.imageViewVerified.setVisibility(View.VISIBLE);
     }
 
     private String getStatus(String status) {

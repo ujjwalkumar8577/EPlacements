@@ -71,7 +71,7 @@ public class MyAccountActivity extends AppCompatActivity {
         });
 
         binding.textViewChangePassword.setOnClickListener(view -> {
-
+            
         });
 
         binding.imageViewEdit.setOnClickListener(view -> {
@@ -150,8 +150,6 @@ public class MyAccountActivity extends AppCompatActivity {
                         if(response.getBoolean("success")) {
                             userObj = response.getJSONObject("user");
                             JSONArray photo = response.getJSONObject("user").getJSONObject("photo").getJSONObject("data").getJSONArray("data");
-                            binding.animationViewLoading.pauseAnimation();
-                            binding.animationViewLoading.setVisibility(View.GONE);
                             byte[] imageBytes = new byte[photo.length()];
                             for(int i=0; i<photo.length(); i++) {
                                 imageBytes[i] = (byte)photo.getInt(i);
@@ -159,10 +157,13 @@ public class MyAccountActivity extends AppCompatActivity {
                             Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                             binding.imageViewPhoto.setImageBitmap(bmp);
                         }
+                        else
+                            Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
-                        Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
+                        binding.animationViewLoading.setVisibility(View.GONE);
                         e.printStackTrace();
                     }
                 },
