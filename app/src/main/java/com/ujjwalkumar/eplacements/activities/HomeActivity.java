@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ujjwalkumar.eplacements.databinding.ActivityHomeBinding;
 
 public class HomeActivity extends AppCompatActivity {
@@ -20,6 +21,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
+        FirebaseMessaging.getInstance().subscribeToTopic("allStudents");
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();

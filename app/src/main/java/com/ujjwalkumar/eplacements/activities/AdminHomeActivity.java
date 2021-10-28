@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ujjwalkumar.eplacements.databinding.ActivityAdminHomeBinding;
 
 public class AdminHomeActivity extends AppCompatActivity {
@@ -19,6 +20,9 @@ public class AdminHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAdminHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
+        FirebaseMessaging.getInstance().subscribeToTopic("allAdmins");
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
