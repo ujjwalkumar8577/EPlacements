@@ -1,30 +1,43 @@
 package com.ujjwalkumar.eplacements.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityAdminMyAccountBinding;
 
-import org.json.JSONArray;
-
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class AdminMyAccountActivity extends AppCompatActivity {
 
+    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private final int PICK_IMAGE_REQUEST = 11;
+    private String photoURL;
     private ActivityAdminMyAccountBinding binding;
     private SharedPreferences user;
 
@@ -34,6 +47,11 @@ public class AdminMyAccountActivity extends AppCompatActivity {
         binding = ActivityAdminMyAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 10);
+        }
+
+        photoURL = "";
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
@@ -45,7 +63,7 @@ public class AdminMyAccountActivity extends AppCompatActivity {
             user.edit().clear().apply();
             Intent in = new Intent();
             in.setAction(Intent.ACTION_VIEW);
-            in.setClass(getApplicationContext(), AdminLoginActivity.class);
+            in.setClass(getApplicationContext(), LoginActivity.class);
             startActivity(in);
             finishAffinity();
         });
@@ -55,8 +73,39 @@ public class AdminMyAccountActivity extends AppCompatActivity {
         });
 
         binding.imageViewEdit.setOnClickListener(view -> {
-
+            Intent selectIntent = new Intent();
+            selectIntent.setType("image/*");
+            selectIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(selectIntent, "Select image"), PICK_IMAGE_REQUEST);
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==10 && grantResults[0]==1)
+            Toast.makeText(AdminMyAccountActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(AdminMyAccountActivity.this, "Permission not Granted", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(getContentResolver(), filePath);
+                binding.imageViewPhoto.setImageBitmap(bitmap);
+                uploadFile(filePath, "photo", user.getString("id", "tmp"+ new Random().nextInt(10000)));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showInformation() {
@@ -70,15 +119,12 @@ public class AdminMyAccountActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray photo = response.getJSONObject("user").getJSONObject("photo").getJSONObject("data").getJSONArray("data");
-                            binding.animationViewLoading.pauseAnimation();
-                            binding.animationViewLoading.setVisibility(View.GONE);
-                            byte[] imageBytes = new byte[photo.length()];
-                            for(int i=0; i<photo.length(); i++) {
-                                imageBytes[i] = (byte)photo.getInt(i);
-                            }
-                            Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                            binding.imageViewPhoto.setImageBitmap(bmp);
+                            photoURL = response.getJSONObject("user").getString("photo");
+                            Glide.with(AdminMyAccountActivity.this)
+                                    .load(photoURL)
+                                    .placeholder(R.drawable.passportphoto)
+                                    .centerCrop()
+                                    .into(binding.imageViewPhoto);
                         }
                         else
                             Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -100,5 +146,46 @@ public class AdminMyAccountActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void uploadFile(Uri filePath, String folderName, String fileName) {
+        if (filePath != null) {
+            // showing progressDialog while uploading
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading file ...");
+            progressDialog.show();
+
+            // uploading file and adding listeners on upload or failure of image
+            StorageReference reference = firebaseStorage.getReference("admins").child(folderName).child(fileName);
+            reference.putFile(filePath)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(AdminMyAccountActivity.this, "Upload success", Toast.LENGTH_SHORT).show();
+                    })
+
+                    .addOnFailureListener(e -> {
+                        progressDialog.dismiss();
+                        e.printStackTrace();
+                        Toast.makeText(AdminMyAccountActivity.this, "Upload failed", Toast.LENGTH_SHORT).show();
+                    })
+
+                    .addOnProgressListener(taskSnapshot -> {
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                    })
+
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            reference.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String downloadURL = uri.toString();
+                                updatePhoto(downloadURL);
+                            });
+                        }
+                    });
+        }
+    }
+
+    private void updatePhoto(String downloadURL) {
+        Toast.makeText(AdminMyAccountActivity.this, downloadURL, Toast.LENGTH_SHORT).show();
     }
 }

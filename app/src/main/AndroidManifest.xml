@@ -3,6 +3,7 @@
     package="com.ujjwalkumar.eplacements">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -12,6 +13,9 @@
         android:roundIcon="@drawable/mnnit"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPlacements">
+        <activity
+            android:name=".activities.ViewPdfActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.AdminManageStudentsActivity"
             android:exported="false" />
@@ -73,9 +77,10 @@
         </activity>
 
         <service
-            android:name=".utilities.PushNotificationService" android:exported="false">
+            android:name=".utilities.PushNotificationService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
