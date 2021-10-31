@@ -1,11 +1,16 @@
 package com.ujjwalkumar.eplacements.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -19,6 +24,7 @@ import com.ujjwalkumar.eplacements.databinding.ActivityNoticesBinding;
 import com.ujjwalkumar.eplacements.models.Notice;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -38,10 +44,45 @@ public class NoticesActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
+        if(user.getString("type", "").equals("admin"))
+            binding.buttonAdd.setVisibility(View.VISIBLE);
+        else
+            binding.buttonAdd.setVisibility(View.GONE);
         showInformation();
 
         binding.imageViewBack.setOnClickListener(view -> {
             super.onBackPressed();
+        });
+
+        binding.buttonAdd.setOnClickListener(view -> {
+            LayoutInflater li = LayoutInflater.from(NoticesActivity.this);
+            View promptsView = li.inflate(R.layout.dialog_add_notice, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NoticesActivity.this);
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput1 = promptsView.findViewById(R.id.editTextDialogUserInput1);
+            final EditText userInput2 = promptsView.findViewById(R.id.editTextDialogUserInput2);
+
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Add",
+                            (dialog, id) -> {
+                                String title = userInput1.getText().toString();
+                                String content = userInput2.getText().toString();
+                                if(title.equals("") || content.equals(""))
+                                    Toast.makeText(NoticesActivity.this, "Fields required", Toast.LENGTH_SHORT).show();
+                                else
+                                    addNotice(title, content);
+                            })
+                    .setNegativeButton("Cancel",
+                            (dialog, id) -> dialog.cancel());
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            alertDialog.getWindow().setBackgroundDrawable(getDrawable(R.color.gray));
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
         });
     }
 
@@ -69,6 +110,7 @@ public class NoticesActivity extends AppCompatActivity {
                             NoticeAdapter adapter = new NoticeAdapter(NoticesActivity.this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(NoticesActivity.this));
                             binding.recyclerView.setAdapter(adapter);
+                            binding.recyclerView.smoothScrollToPosition(al.size()-1);
                         }
                         else
                             Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -92,4 +134,45 @@ public class NoticesActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
+    private void addNotice(String title, String content) {
+        String url = getString(R.string.base_url) + "admin/addNotice";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("title", title);
+            postData.put("content", content);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            JSONObject newNotice = response.getJSONObject("notice");
+                            Notice notice = new Notice(newNotice.getString("title"), newNotice.getString("content"), newNotice.getLong("timestamp"));
+                            al.add(notice);
+
+                            NoticeAdapter adapter = new NoticeAdapter(NoticesActivity.this, al);
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(NoticesActivity.this));
+                            binding.recyclerView.setAdapter(adapter);
+                            Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(NoticesActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
 }
