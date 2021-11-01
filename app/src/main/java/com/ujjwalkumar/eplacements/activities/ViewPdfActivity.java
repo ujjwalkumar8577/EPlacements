@@ -24,7 +24,6 @@ public class ViewPdfActivity extends AppCompatActivity {
         });
 
         binding.webView.getSettings().setJavaScriptEnabled(true);
-        binding.webView.getSettings().setBuiltInZoomControls(true);
         binding.webView.loadUrl(BASE_URL+url);
     }
 }

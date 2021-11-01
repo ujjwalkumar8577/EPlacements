@@ -99,18 +99,14 @@ public class NoticesActivity extends AppCompatActivity {
                             al = new ArrayList<>();
                             for(int i=0; i< notices.length(); i++) {
                                 JSONObject obj = notices.getJSONObject(i);
-                                String title = "Not available";
-                                if(obj.has("title"))
-                                    title = obj.getString("title");
 
-                                Notice notice = new Notice(title, obj.getString("content"), obj.getLong("timestamp"));
+                                Notice notice = new Notice(obj.getString("title"), obj.getString("content"), obj.getLong("timestamp"));
                                 al.add(notice);
                             }
 
                             NoticeAdapter adapter = new NoticeAdapter(NoticesActivity.this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(NoticesActivity.this));
                             binding.recyclerView.setAdapter(adapter);
-                            binding.recyclerView.smoothScrollToPosition(al.size()-1);
                         }
                         else
                             Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -149,14 +145,14 @@ public class NoticesActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONObject newNotice = response.getJSONObject("notice");
-                            Notice notice = new Notice(newNotice.getString("title"), newNotice.getString("content"), newNotice.getLong("timestamp"));
+                            JSONObject obj = response.getJSONObject("notice");
+                            Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Notice notice = new Notice(obj.getString("title"), obj.getString("content"), obj.getLong("timestamp"));
                             al.add(notice);
 
                             NoticeAdapter adapter = new NoticeAdapter(NoticesActivity.this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(NoticesActivity.this));
                             binding.recyclerView.setAdapter(adapter);
-                            Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                         else
                             Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();

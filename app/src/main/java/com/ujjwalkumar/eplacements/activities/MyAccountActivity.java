@@ -3,19 +3,25 @@ package com.ujjwalkumar.eplacements.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -30,6 +36,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityMyAccountBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -76,7 +85,34 @@ public class MyAccountActivity extends AppCompatActivity {
         });
 
         binding.textViewChangePassword.setOnClickListener(view -> {
-            
+            LayoutInflater li = LayoutInflater.from(MyAccountActivity.this);
+            View promptsView = li.inflate(R.layout.dialog_change_password, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MyAccountActivity.this);
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput1 = promptsView.findViewById(R.id.editTextDialogUserInput1);
+            final EditText userInput2 = promptsView.findViewById(R.id.editTextDialogUserInput2);
+
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Change",
+                            (dialog, id) -> {
+                                String currentPassword = userInput1.getText().toString();
+                                String newPassword = userInput2.getText().toString();
+                                if(currentPassword.equals("") || newPassword.equals(""))
+                                    Toast.makeText(MyAccountActivity.this, "Fields required", Toast.LENGTH_SHORT).show();
+                                else
+                                    changePassword(currentPassword, newPassword);
+                            })
+                    .setNegativeButton("Cancel",
+                            (dialog, id) -> dialog.cancel());
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            alertDialog.getWindow().setBackgroundDrawable(getDrawable(R.color.gray));
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
         });
 
         binding.imageViewEdit.setOnClickListener(view -> {
@@ -134,6 +170,7 @@ public class MyAccountActivity extends AppCompatActivity {
                         .Media
                         .getBitmap(getContentResolver(), filePath);
                 binding.imageViewPhoto.setImageBitmap(bitmap);
+                binding.imageViewPhoto.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 uploadFile(filePath, "photo", user.getString("id", "tmp"+ new Random().nextInt(10000)));
             }
             catch (IOException e) {
@@ -187,6 +224,43 @@ public class MyAccountActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
+    private void changePassword(String currentPassword, String newPassword) {
+        String url = getString(R.string.base_url) + "student/changePassword";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("current_password", currentPassword);
+            postData.put("new_password", newPassword);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            String token = response.getString("token");
+                            user.edit().putString("token", token).apply();
+                            Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(MyAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
     private void uploadFile(Uri filePath, String folderName, String fileName) {
         if (filePath != null) {
             // showing progressDialog while uploading
@@ -217,15 +291,49 @@ public class MyAccountActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             reference.getDownloadUrl().addOnSuccessListener(uri -> {
                                 String downloadURL = uri.toString();
-                                updatePhoto(downloadURL);
+                                String param = folderName.substring(0, 1).toUpperCase() + folderName.substring(1);
+                                updateFile(downloadURL, param);
                             });
                         }
                     });
         }
     }
 
-    private void updatePhoto(String downloadURL) {
-        Toast.makeText(MyAccountActivity.this, downloadURL, Toast.LENGTH_SHORT).show();
+    private void updateFile(String downloadURL, String param) {
+        String url = getString(R.string.base_url) + "student/update" + param;
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put(param.toLowerCase() + "URL", downloadURL);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            if(param.equals("Photo"))
+                                photoURL = downloadURL;
+                            else if(param.equals("Resume"))
+                                resumeURL = downloadURL;
+                        }
+                        else
+                            Toast.makeText(MyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(MyAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
     private String bitmapToBase64(Bitmap bitmap) {

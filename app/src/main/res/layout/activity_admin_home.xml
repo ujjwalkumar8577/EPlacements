@@ -296,6 +296,6 @@
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bellempty" />
+        app:srcCompat="@drawable/bellfull" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

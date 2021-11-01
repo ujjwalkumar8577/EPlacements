@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Help &amp; Feedback"
+        android:text="View Resume"
         android:textColor="@color/gray"
         android:textSize="24sp"
         android:textStyle="bold"
