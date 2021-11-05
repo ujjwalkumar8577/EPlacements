@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -36,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityMyAccountBinding;
+import com.ujjwalkumar.eplacements.models.StudentProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +56,7 @@ public class MyAccountActivity extends AppCompatActivity {
     private String photoURL, resumeURL;
     private ActivityMyAccountBinding binding;
     private SharedPreferences user;
-    private Object userObj;
+    private StudentProfile userObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,7 @@ public class MyAccountActivity extends AppCompatActivity {
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
 
-            alertDialog.getWindow().setBackgroundDrawable(getDrawable(R.color.gray));
+            alertDialog.getWindow().setBackgroundDrawable(AppCompatResources.getDrawable(MyAccountActivity.this, R.color.gray));
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
             alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
         });
@@ -185,6 +187,7 @@ public class MyAccountActivity extends AppCompatActivity {
 
     private void showInformation() {
         binding.textViewName.setText(user.getString("name", ""));
+        binding.textViewRegNo   .setText(user.getString("id", ""));
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
         String url = getString(R.string.base_url);
@@ -193,7 +196,8 @@ public class MyAccountActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            userObj = response.getJSONObject("user");
+                            Gson gson = new Gson();
+                            userObj = gson.fromJson(response.getJSONObject("user").toString(), StudentProfile.class);
                             photoURL = response.getJSONObject("user").getString("photo");
                             resumeURL = response.getJSONObject("user").getString("resume");
                             Glide.with(MyAccountActivity.this)
@@ -221,8 +225,7 @@ public class MyAccountActivity extends AppCompatActivity {
             }
         };
 
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
+        Volley.newRequestQueue(this).add(jsonObjectRequest); }
 
     private void changePassword(String currentPassword, String newPassword) {
         String url = getString(R.string.base_url) + "student/changePassword";

@@ -28,6 +28,10 @@ public class HomeActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
+        binding.textViewName.setOnClickListener(view -> {
+            startActivity(new Intent(this, StatisticsActivity.class));
+        });
+
         binding.imageViewAccount.setOnClickListener(view -> {
             startActivity(new Intent(this, MyAccountActivity.class));
         });

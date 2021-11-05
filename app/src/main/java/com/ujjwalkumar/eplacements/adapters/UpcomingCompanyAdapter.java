@@ -55,7 +55,7 @@ public class UpcomingCompanyAdapter extends RecyclerView.Adapter<UpcomingCompany
         return al.size();
     }
 
-    public class UpcomingCompanyViewHolder extends RecyclerView.ViewHolder {
+    public static class UpcomingCompanyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewCompanyName, textViewJobProfile, textViewCTC, textViewDeadline;
 

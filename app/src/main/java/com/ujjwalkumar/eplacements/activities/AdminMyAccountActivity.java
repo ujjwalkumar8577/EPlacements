@@ -3,18 +3,24 @@ package com.ujjwalkumar.eplacements.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -27,6 +33,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityAdminMyAccountBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -69,7 +78,34 @@ public class AdminMyAccountActivity extends AppCompatActivity {
         });
 
         binding.textViewChangePassword.setOnClickListener(view -> {
+            LayoutInflater li = LayoutInflater.from(AdminMyAccountActivity.this);
+            View promptsView = li.inflate(R.layout.dialog_change_password, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminMyAccountActivity.this);
+            alertDialogBuilder.setView(promptsView);
 
+            final EditText userInput1 = promptsView.findViewById(R.id.editTextDialogUserInput1);
+            final EditText userInput2 = promptsView.findViewById(R.id.editTextDialogUserInput2);
+
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Change",
+                            (dialog, id) -> {
+                                String currentPassword = userInput1.getText().toString();
+                                String newPassword = userInput2.getText().toString();
+                                if(currentPassword.equals("") || newPassword.equals(""))
+                                    Toast.makeText(AdminMyAccountActivity.this, "Fields required", Toast.LENGTH_SHORT).show();
+                                else
+                                    changePassword(currentPassword, newPassword);
+                            })
+                    .setNegativeButton("Cancel",
+                            (dialog, id) -> dialog.cancel());
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            alertDialog.getWindow().setBackgroundDrawable(AppCompatResources.getDrawable(AdminMyAccountActivity.this, R.color.gray));
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
         });
 
         binding.imageViewEdit.setOnClickListener(view -> {
@@ -133,6 +169,43 @@ public class AdminMyAccountActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
                         binding.animationViewLoading.setVisibility(View.GONE);
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(AdminMyAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void changePassword(String currentPassword, String newPassword) {
+        String url = getString(R.string.base_url) + "admin/changePassword";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("current_password", currentPassword);
+            postData.put("new_password", newPassword);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            String token = response.getString("token");
+                            user.edit().putString("token", token).apply();
+                            Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 },

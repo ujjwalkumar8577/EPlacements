@@ -55,7 +55,7 @@ public class RegisteredCompanyAdapter extends RecyclerView.Adapter<RegisteredCom
         return al.size();
     }
 
-    public class RegisteredCompanyViewHolder extends RecyclerView.ViewHolder {
+    public static class RegisteredCompanyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewCompanyName, textViewJobProfile, textViewCTC, textViewTimestamp;
 

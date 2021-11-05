@@ -38,8 +38,14 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
         holder.textViewContent.setText(obj.getContent());
         holder.textViewTimestamp.setText(obj.getTimeString());
 
-        holder.textViewMore.setOnClickListener(view -> {
+//        if(holder.textViewContent.getLineCount()>=2 && obj.getContent().charAt(holder.textViewContent.getLayout().getLineEnd(1))=='.')
+//            holder.textViewMore.setVisibility(View.VISIBLE);
+//        else
+//            holder.textViewMore.setVisibility(View.GONE);
 
+        holder.textViewMore.setOnClickListener(view -> {
+            holder.textViewContent.setMaxLines(1000);
+            holder.textViewMore.setVisibility(View.GONE);
         });
     }
 
@@ -48,7 +54,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
         return al.size();
     }
 
-    public class NoticeViewHolder extends RecyclerView.ViewHolder {
+    public static class NoticeViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewTitle, textViewContent, textViewMore, textViewTimestamp;
 

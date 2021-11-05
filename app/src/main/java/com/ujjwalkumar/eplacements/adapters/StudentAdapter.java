@@ -57,7 +57,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return al.size();
     }
 
-    public class StudentViewHolder extends RecyclerView.ViewHolder {
+    public static class StudentViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName, textViewDegreeCourse, textViewRegNo, textViewStatus;
 

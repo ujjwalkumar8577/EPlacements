@@ -2,7 +2,6 @@ package com.ujjwalkumar.eplacements.utilities;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -21,7 +20,6 @@ public class PushNotificationService extends FirebaseMessagingService  {
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
         System.out.println("Notification received");
-        Log.d("Notification", "Received new");
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Push Notifications", NotificationManager.IMPORTANCE_HIGH);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -40,5 +38,10 @@ public class PushNotificationService extends FirebaseMessagingService  {
         notificationManager.notify(101, builder.build());
 
         super.onMessageReceived(remoteMessage);
+    }
+
+    @Override
+    public void onNewToken(@NonNull String s) {
+        super.onNewToken(s);
     }
 }

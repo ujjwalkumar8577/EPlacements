@@ -22,13 +22,12 @@ public class HelpActivity extends AppCompatActivity {
         });
         
         binding.buttonSend.setOnClickListener(view -> {
-            String regno = binding.editTextRegistration.getText().toString();
             String message = binding.editTextMessage.getText().toString();
-            sendHelp(regno, message);
+            sendHelp(message);
         });
     }
     
-    private void sendHelp(String regno, String message) {
+    private void sendHelp(String message) {
         Toast.makeText(HelpActivity.this, "Sent successfully", Toast.LENGTH_SHORT).show();
     }
 }

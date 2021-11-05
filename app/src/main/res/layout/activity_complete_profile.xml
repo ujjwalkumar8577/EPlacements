@@ -1,8 +1,709 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".activities.CompleteProfileActivity">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/back"/>
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Complete Profile"
+        android:textColor="@color/gray"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBack"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBack"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBack" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Name"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Name"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Course"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <Spinner
+                android:id="@+id/spinnerCourse"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:entries="@array/course"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/bg_input"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Branch"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <Spinner
+                android:id="@+id/spinnerBranch"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:entries="@array/branch"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/bg_input"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Date of Birth"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:id="@+id/textViewDOB"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_input"
+                android:text="Select DOB"
+                android:textSize="16sp"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Email"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Skype ID"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextSkypeID"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Skype ID"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Linkedin ID"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextLinkedinID"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Linkedin ID"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Gender"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <Spinner
+                android:id="@+id/spinnerGender"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:entries="@array/gender"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/bg_input"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Category"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:entries="@array/category"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/bg_input"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Physically Challenged"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="4dp"
+                android:background="@drawable/bg_input"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/checkBoxYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="No" />
+
+                <RadioButton
+                    android:id="@+id/checkBoxNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Yes" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Residential Status"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="4dp"
+                android:background="@drawable/bg_input"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/checkBoxHosteller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Hosteller" />
+
+                <RadioButton
+                    android:id="@+id/checkBoxDayScholar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Day Scholar" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Guardian Name"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextGuardianName"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Guardian Name"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Present Address"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextPresentAddress"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Present Address"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Permanent Address"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxSame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Same as present address" />
+
+            <EditText
+                android:id="@+id/editTextPermanentAddress"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Permanent Address"
+                android:lines="3"
+                android:inputType="textMultiLine"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Marital Status"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="4dp"
+                android:background="@drawable/bg_input"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/checkBoxSingle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Single" />
+
+                <RadioButton
+                    android:id="@+id/checkBoxMarried"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Married" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Country"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextCountry"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Country"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="State"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextState"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="State"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="10th School"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextSchool10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="10th School"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="10th Board"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextBoard10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="10th Board"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="10th Year"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextYear10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="10th Year"
+                android:inputType="number"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="10th %"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextPercent10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="10th %"
+                android:inputType="numberDecimal"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="12th School"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextSchool12"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="12th School"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="12th Board"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextBoard12"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="12th Board"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="12th Year"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextYear12"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="12th Year"
+                android:inputType="number"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="12th %"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextPercent12"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="12th %"
+                android:inputType="numberDecimal"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Backlogs"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextBacklogs"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Backlogs (if any)"
+                android:inputType="number"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="CPI"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextCpi"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="CPI"
+                android:inputType="numberDecimal"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Project Title"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextProjectTitle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Project Title"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Project Description"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextProjectDesc"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Project Description"
+                android:lines="5"
+                android:inputType="textMultiLine"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Internship Organisation"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextInternTitle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Internship Organisation"
+                android:inputType="text"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:text="Internship Description"
+                android:textStyle="bold"
+                android:textColor="@color/gray"/>
+
+            <EditText
+                android:id="@+id/editTextInternDesc"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_input"
+                android:hint="Internship Description"
+                android:lines="5"
+                android:inputType="textMultiLine"
+                android:textColor="@color/gray"/>
+
+            <Button
+                android:id="@+id/buttonUpdateProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_button"
+                android:text="Update Profile"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/buttonUpdateStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_button"
+                android:text="Update Status"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

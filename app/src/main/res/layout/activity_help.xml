@@ -29,36 +29,21 @@
         app:layout_constraintTop_toTopOf="@+id/imageViewBack" />
 
     <EditText
-        android:id="@+id/editTextRegistration"
+        android:id="@+id/editTextMessage"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="320dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/bg_input"
         android:ems="10"
-        android:hint="Registration No."
-        android:inputType="phone"
+        android:gravity="start"
+        android:hint="Message"
+        android:inputType="textMultiLine"
+        android:padding="24dp"
         android:textColor="@color/gray"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <EditText
-        android:id="@+id/editTextMessage"
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_marginTop="16dp"
-        android:padding="24dp"
-        android:gravity="start"
-        android:background="@drawable/bg_input"
-        android:ems="10"
-        android:hint="Message"
-        android:textSize="18sp"
-        android:inputType="textMultiLine"
-        android:textColor="@color/gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegistration" />
 
     <Button
         android:id="@+id/buttonSend"

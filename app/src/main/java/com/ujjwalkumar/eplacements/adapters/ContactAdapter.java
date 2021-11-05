@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.models.Contact;
 
@@ -43,6 +44,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.textViewPhone.setText(obj.getPhone());
         holder.textViewEmail.setText(obj.getEmail());
 
+        Glide.with(context)
+                .load(obj.getPhoto())
+                .placeholder(R.drawable.passportphoto)
+                .centerCrop()
+                .into(holder.imageView);
+
         holder.textViewPhone.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + obj.getPhone()));
@@ -62,7 +69,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         return al.size();
     }
 
-    public class ContactViewHolder extends RecyclerView.ViewHolder {
+    public static class ContactViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName, textViewRole, textViewDegreeCourse, textViewPhone, textViewEmail;
         ImageView imageView;

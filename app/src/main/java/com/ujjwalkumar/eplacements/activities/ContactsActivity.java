@@ -54,7 +54,7 @@ public class ContactsActivity extends AppCompatActivity {
                             al = new ArrayList<>();
                             for(int i=0; i< contacts.length(); i++) {
                                 JSONObject obj = contacts.getJSONObject(i);
-                                Contact contact = new Contact(obj.getString("name"), obj.getString("role"), obj.getString("degree_course"), obj.getString("phone"), obj.getString("email"));
+                                Contact contact = new Contact(obj.getString("name"), obj.getString("role"), obj.getString("degree_course"), obj.getString("phone"), obj.getString("email"), obj.getString("photo"));
                                 al.add(contact);
                             }
                             ContactAdapter adapter = new ContactAdapter(ContactsActivity.this, al);

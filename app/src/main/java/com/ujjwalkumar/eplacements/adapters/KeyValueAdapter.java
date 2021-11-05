@@ -58,7 +58,7 @@ public class KeyValueAdapter extends RecyclerView.Adapter<KeyValueAdapter.KeyVal
         return al.size();
     }
 
-    public class KeyValueViewHolder extends RecyclerView.ViewHolder {
+    public static class KeyValueViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewKey, textViewValue;
 

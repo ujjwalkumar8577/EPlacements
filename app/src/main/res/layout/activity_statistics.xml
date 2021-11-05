@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".activities.AdminManageStudentsActivity">
+    tools:context=".activities.StatisticsActivity">
 
     <ImageView
         android:id="@+id/imageViewBack"
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Manage Students"
+        android:text="Placement Statistics"
         android:textColor="@color/gray"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -45,23 +45,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:text="Filter by status"
+            android:text="Select Year"
             android:textColor="@color/gray"
             android:textSize="16sp"
             android:textStyle="bold"/>
 
-        <ImageView
-            android:id="@+id/imageViewFilter"
+        <Spinner
+            android:id="@+id/spinnerYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/edit"/>
+            android:background="@drawable/bg_input"
+            android:entries="@array/year"
+            android:padding="8dp"
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.anychart.AnyChartView
+        android:id="@+id/chartView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,10 +75,10 @@
         android:id="@+id/animationViewLoading"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="@+id/chartView"
+        app:layout_constraintEnd_toEndOf="@+id/chartView"
+        app:layout_constraintStart_toStartOf="@+id/chartView"
+        app:layout_constraintTop_toTopOf="@+id/chartView"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loadinganimation" />

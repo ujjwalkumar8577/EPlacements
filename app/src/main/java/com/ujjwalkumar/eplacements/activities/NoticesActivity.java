@@ -10,9 +10,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -80,9 +83,21 @@ public class NoticesActivity extends AppCompatActivity {
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
 
-            alertDialog.getWindow().setBackgroundDrawable(getDrawable(R.color.gray));
+            alertDialog.getWindow().setBackgroundDrawable(AppCompatResources.getDrawable(NoticesActivity.this, R.color.gray));
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
             alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
+        });
+
+        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(newState==RecyclerView.SCROLL_STATE_SETTLING)
+                    binding.buttonAdd.setVisibility(View.INVISIBLE);
+                else
+                    binding.buttonAdd.setVisibility(View.VISIBLE);
+            }
         });
     }
 

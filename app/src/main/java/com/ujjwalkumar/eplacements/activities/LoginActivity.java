@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.textViewHelp.setOnClickListener(view -> {
             Intent in = new Intent();
             in.setAction(Intent.ACTION_VIEW);
-            in.setClass(getApplicationContext(), HelpActivity.class);
+            in.setClass(getApplicationContext(), ContactsActivity.class);
             startActivity(in);
         });
 
