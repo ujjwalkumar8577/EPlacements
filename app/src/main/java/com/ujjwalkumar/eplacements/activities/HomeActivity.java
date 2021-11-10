@@ -28,10 +28,6 @@ public class HomeActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
-        binding.textViewName.setOnClickListener(view -> {
-            startActivity(new Intent(this, StatisticsActivity.class));
-        });
-
         binding.imageViewAccount.setOnClickListener(view -> {
             startActivity(new Intent(this, MyAccountActivity.class));
         });
@@ -61,6 +57,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu6.setOnClickListener(view -> {
+            startActivity(new Intent(this, HelpActivity.class));
+        });
+
+        binding.layoutMenu7.setOnClickListener(view -> {
+            startActivity(new Intent(this, StatisticsActivity.class));
+        });
+
+        binding.layoutMenu8.setOnClickListener(view -> {
             startActivity(new Intent(this, HelpActivity.class));
         });
     }

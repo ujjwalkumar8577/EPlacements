@@ -3,6 +3,7 @@ package com.ujjwalkumar.eplacements.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +28,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ir.androidexception.datatable.model.DataTableHeader;
+import ir.androidexception.datatable.model.DataTableRow;
+
 public class StatisticsActivity extends AppCompatActivity {
 
-    private ArrayList<DataEntry> data1;
     private String year;
     private Pie pie;
     private ActivityStatisticsBinding binding;
@@ -43,10 +46,15 @@ public class StatisticsActivity extends AppCompatActivity {
         year = binding.spinnerYear.getSelectedItem().toString();
         pie = AnyChart.pie();
 
+        binding.imageViewBack.setOnClickListener(view -> {
+            super.onBackPressed();
+        });
+
         binding.spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 year = binding.spinnerYear.getSelectedItem().toString();
+                ((TextView)view).setTextColor(getResources().getColor(R.color.gray));
                 showInformation();
             }
 
@@ -67,13 +75,33 @@ public class StatisticsActivity extends AppCompatActivity {
                     try {
                         if(response.getBoolean("success")) {
                             JSONArray arr = response.getJSONObject("stats").getJSONArray("data");
-                            data1 = new ArrayList<>();
+
+                            ArrayList<String> headerData1 = new ArrayList<>();
+                            ArrayList<Integer> headerData2 = new ArrayList<>();
+                            JSONObject tmp0 = arr.getJSONObject(0);
+                            for(int i=0; i<tmp0.names().length(); i++) {
+                                headerData1.add(tmp0.names().getString(i));
+                                headerData2.add(1);
+                            }
+                            headerData2.set(0, 2);
+
+                            ArrayList<DataEntry> pieData = new ArrayList<>();
+                            ArrayList<DataTableRow> rows = new ArrayList<>();
                             for(int i=0; i< arr.length(); i++) {
                                 JSONObject obj = arr.getJSONObject(i);
-                                data1.add(new ValueDataEntry(obj.getString("Branch"), obj.getDouble("% Placement")));
+                                ArrayList<String> rowData = new ArrayList<>();
+                                for(int j=0; j<obj.names().length(); j++) {
+                                    rowData.add(obj.get(headerData1.get(j)).toString());
+                                }
+                                rows.add(new DataTableRow(rowData));
+                                pieData.add(new ValueDataEntry(obj.getString("Branch"), obj.getDouble("% Placement")));
                             }
 
-                            pie.data(data1);
+                            binding.dataTable.setHeader(new DataTableHeader(headerData1, headerData2));
+                            binding.dataTable.setRows(rows);
+                            binding.dataTable.inflate(StatisticsActivity.this);
+
+                            pie.data(pieData);
                             pie.title("% Placement in year " + year);
                             pie.labels().position("outside");
                             pie.legend().title().enabled(true);
@@ -85,6 +113,8 @@ public class StatisticsActivity extends AppCompatActivity {
                                     .itemsLayout(LegendLayout.HORIZONTAL)
                                     .align(Align.CENTER);
                             binding.chartView.setChart(pie);
+
+                            binding.scrollView.fullScroll(View.FOCUS_UP);
                         }
                         else
                             Toast.makeText(StatisticsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();

@@ -16,5 +16,9 @@ public class AddExperienceActivity extends AppCompatActivity {
         binding = ActivityAddExperienceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.imageViewBack.setOnClickListener(view -> {
+            super.onBackPressed();
+        });
+
     }
 }

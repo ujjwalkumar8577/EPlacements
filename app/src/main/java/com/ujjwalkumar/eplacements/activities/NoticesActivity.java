@@ -147,7 +147,7 @@ public class NoticesActivity extends AppCompatActivity {
                             JSONObject obj = response.getJSONObject("notice");
                             Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                             Notice notice = new Notice(obj.getString("title"), obj.getString("content"), obj.getLong("timestamp"));
-                            al.add(notice);
+                            al.add(0, notice);
 
                             NoticeAdapter adapter = new NoticeAdapter(NoticesActivity.this, al);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(NoticesActivity.this));

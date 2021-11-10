@@ -54,6 +54,10 @@ public class CompleteProfileActivity extends AppCompatActivity {
         else
             binding.buttonUpdateStatus.setVisibility(View.GONE);
 
+        binding.imageViewBack.setOnClickListener(view -> {
+            super.onBackPressed();
+        });
+
         binding.textViewDOB.setOnClickListener(view -> {
             showDateTimePicker();
         });
@@ -82,10 +86,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
     }
 
     private void initialiseValues() {
-        if(studentProfile.dob.equals(""))
-            dateSet = false;
-        else
-            dateSet = true;
+        dateSet = !studentProfile.dob.equals("");
         binding.editTextName.setText(studentProfile.name);
         binding.spinnerCourse.setSelection(search(getResources().getStringArray(R.array.course), studentProfile.course));
         binding.spinnerBranch.setSelection(search(getResources().getStringArray(R.array.branch), studentProfile.branch));
@@ -207,8 +208,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
-
-    private int search(String arr[], String key) {
+    private int search(String[] arr, String key) {
         for(int i=0; i<arr.length; i++) {
             if(arr[i].equals(key))
                 return i;
