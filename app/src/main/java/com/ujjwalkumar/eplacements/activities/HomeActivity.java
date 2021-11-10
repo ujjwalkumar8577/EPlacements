@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu4.setOnClickListener(view -> {
-            startActivity(new Intent(this, RegisteredCompaniesActivity.class));
+            startActivity(new Intent(this, AddExperienceActivity.class));
         });
 
         binding.layoutMenu5.setOnClickListener(view -> {

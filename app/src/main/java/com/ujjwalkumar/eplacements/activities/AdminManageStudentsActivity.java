@@ -74,8 +74,7 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
     }
 
     private void showInformation() {
-        binding.animationViewLoading.setVisibility(View.VISIBLE);
-        binding.animationViewLoading.playAnimation();
+        startLoading();
         String url = getString(R.string.base_url) + "admin/getStudents";
         JSONObject postData = new JSONObject();
         try {
@@ -102,8 +101,7 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
                         }
                         else
                             Toast.makeText(AdminManageStudentsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        binding.animationViewLoading.pauseAnimation();
-                        binding.animationViewLoading.setVisibility(View.GONE);
+                        stopLoading();
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
                         binding.animationViewLoading.setVisibility(View.GONE);
@@ -120,5 +118,17 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void startLoading() {
+        binding.recyclerView.setVisibility(View.GONE);
+        binding.shimmerFrameLayout.setVisibility(View.VISIBLE);
+        binding.shimmerFrameLayout.startShimmer();
+    }
+
+    private void stopLoading() {
+        binding.shimmerFrameLayout.stopShimmer();
+        binding.shimmerFrameLayout.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.VISIBLE);
     }
 }

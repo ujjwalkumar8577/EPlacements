@@ -75,8 +75,7 @@ public class CompanyDetailsActivity extends AppCompatActivity {
 
     private void showInformation() {
         binding.textView3.setText(name);
-        binding.animationViewLoading.setVisibility(View.VISIBLE);
-        binding.animationViewLoading.playAnimation();
+        startLoading();
         String url = getString(R.string.base_url) + "getCompany";
         JSONObject postData = new JSONObject();
         try {
@@ -115,11 +114,9 @@ public class CompanyDetailsActivity extends AppCompatActivity {
                         }
                         else
                             Toast.makeText(CompanyDetailsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        binding.animationViewLoading.pauseAnimation();
-                        binding.animationViewLoading.setVisibility(View.GONE);
+                        stopLoading();
                     } catch (Exception e) {
-                        binding.animationViewLoading.pauseAnimation();
-                        binding.animationViewLoading.setVisibility(View.GONE);
+                        stopLoading();
                         e.printStackTrace();
                     }
                 },
@@ -136,8 +133,7 @@ public class CompanyDetailsActivity extends AppCompatActivity {
     }
 
     private void registerForCompany() {
-        binding.animationViewLoading.setVisibility(View.VISIBLE);
-        binding.animationViewLoading.playAnimation();
+        startLoading();
         String url = getString(R.string.base_url) + "student/registerForCompany";
         JSONObject postData = new JSONObject();
         try {
@@ -152,12 +148,10 @@ public class CompanyDetailsActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
                 response -> {
                     try {
-                        binding.animationViewLoading.pauseAnimation();
-                        binding.animationViewLoading.setVisibility(View.GONE);
+                        stopLoading();
                         Toast.makeText(CompanyDetailsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
-                        binding.animationViewLoading.pauseAnimation();
-                        binding.animationViewLoading.setVisibility(View.GONE);
+                        stopLoading();
                         e.printStackTrace();
                     }
                 },
@@ -171,6 +165,18 @@ public class CompanyDetailsActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void startLoading() {
+        binding.recyclerView.setVisibility(View.GONE);
+        binding.shimmerFrameLayout.setVisibility(View.VISIBLE);
+        binding.shimmerFrameLayout.startShimmer();
+    }
+
+    private void stopLoading() {
+        binding.shimmerFrameLayout.stopShimmer();
+        binding.shimmerFrameLayout.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.VISIBLE);
     }
 
     public String getAllowedBranches(JSONArray array) throws JSONException {

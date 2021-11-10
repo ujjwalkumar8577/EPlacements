@@ -10,12 +10,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -87,23 +85,10 @@ public class NoticesActivity extends AppCompatActivity {
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
             alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
         });
-
-        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if(newState==RecyclerView.SCROLL_STATE_SETTLING)
-                    binding.buttonAdd.setVisibility(View.INVISIBLE);
-                else
-                    binding.buttonAdd.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     private void showInformation() {
-        binding.animationViewLoading.setVisibility(View.VISIBLE);
-        binding.animationViewLoading.playAnimation();
+        startLoading();
         String url = getString(R.string.base_url) + "getNotice";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -125,8 +110,7 @@ public class NoticesActivity extends AppCompatActivity {
                         }
                         else
                             Toast.makeText(NoticesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        binding.animationViewLoading.pauseAnimation();
-                        binding.animationViewLoading.setVisibility(View.GONE);
+                        stopLoading();
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
                         binding.animationViewLoading.setVisibility(View.GONE);
@@ -185,5 +169,17 @@ public class NoticesActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void startLoading() {
+        binding.recyclerView.setVisibility(View.GONE);
+        binding.shimmerFrameLayout.setVisibility(View.VISIBLE);
+        binding.shimmerFrameLayout.startShimmer();
+    }
+
+    private void stopLoading() {
+        binding.shimmerFrameLayout.stopShimmer();
+        binding.shimmerFrameLayout.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.VISIBLE);
     }
 }

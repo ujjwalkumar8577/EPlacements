@@ -28,6 +28,33 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewBack"
         app:layout_constraintTop_toTopOf="@+id/imageViewBack" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:shimmer_duration="1000"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmerview_notices"/>
+            <include layout="@layout/shimmerview_notices"/>
+            <include layout="@layout/shimmerview_notices"/>
+            <include layout="@layout/shimmerview_notices"/>
+            <include layout="@layout/shimmerview_notices"/>
+            <include layout="@layout/shimmerview_notices"/>
+            <include layout="@layout/shimmerview_notices"/>
+            <include layout="@layout/shimmerview_notices"/>
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -42,6 +69,7 @@
         android:id="@+id/animationViewLoading"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="@+id/recyclerView"
