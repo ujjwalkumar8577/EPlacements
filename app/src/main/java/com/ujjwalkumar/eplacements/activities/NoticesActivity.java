@@ -23,6 +23,7 @@ import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.adapters.NoticeAdapter;
 import com.ujjwalkumar.eplacements.databinding.ActivityNoticesBinding;
 import com.ujjwalkumar.eplacements.models.Notice;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,8 @@ public class NoticesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityNoticesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        EPlacementsUtil.checkInternetConnection(this);
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         if(user.getString("type", "").equals("admin"))

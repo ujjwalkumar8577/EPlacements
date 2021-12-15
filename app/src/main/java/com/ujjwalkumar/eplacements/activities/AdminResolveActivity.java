@@ -15,9 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.adapters.StudentAdapter;
-import com.ujjwalkumar.eplacements.databinding.ActivityAdminManageStudentsBinding;
-import com.ujjwalkumar.eplacements.models.Student;
+import com.ujjwalkumar.eplacements.adapters.GrievanceAdapter;
+import com.ujjwalkumar.eplacements.databinding.ActivityAdminResolveBinding;
+import com.ujjwalkumar.eplacements.models.Grievance;
 import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
@@ -28,17 +28,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminManageStudentsActivity extends AppCompatActivity {
+public class AdminResolveActivity extends AppCompatActivity {
 
     private String statusFilter;
-    private ArrayList<Student> al;
-    private ActivityAdminManageStudentsBinding binding;
+    private ArrayList<Grievance> al;
+    private ActivityAdminResolveBinding binding;
     private SharedPreferences user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAdminManageStudentsBinding.inflate(getLayoutInflater());
+        binding = ActivityAdminResolveBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         EPlacementsUtil.checkInternetConnection(this);
@@ -56,17 +56,13 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Filter")
                     .setCancelable(false)
-                    .setSingleChoiceItems(new String[]{"All", "Registered", "Verified", "Unverified", "Placed"}, -1, (dialog, which) -> {
+                    .setSingleChoiceItems(new String[]{"All", "Resolved", "Unresolved"}, -1, (dialog, which) -> {
                         if(which==0)
                             statusFilter = "";
                         else if(which==1)
-                            statusFilter = "registered";
-                        else if(which==2)
-                            statusFilter = "verified";
-                        else if(which==3)
-                            statusFilter = "unverified";
+                            statusFilter = "resolved";
                         else
-                            statusFilter = "placed";
+                            statusFilter = "unresolved";
                     })
                     .setPositiveButton("Yes", (dialog, id) -> {
                         showInformation();
@@ -79,10 +75,10 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
     private void showInformation() {
         binding.textViewStatus.setText(statusFilter);
         startLoading();
-        String url = getString(R.string.base_url) + "admin/getStudents";
+        String url = getString(R.string.base_url) + "admin/getGrievance";
         JSONObject postData = new JSONObject();
         try {
-            postData.put("get_status", statusFilter);
+            postData.put("status", statusFilter);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -91,20 +87,19 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray students = response.getJSONArray("students");
+                            JSONArray grievances = response.getJSONArray("grievances");
                             al = new ArrayList<>();
-                            for(int i=0; i<students.length(); i++) {
-                                JSONObject obj = students.getJSONObject(i);
-                                String degreeCourse = obj.getString("course") + " - " + obj.get("branch");
-                                Student student = new Student(obj.getString("name"), obj.getString("reg_no"), degreeCourse, obj.getString("status"));
-                                al.add(student);
+                            for(int i=0; i<grievances.length(); i++) {
+                                JSONObject obj = grievances.getJSONObject(i);
+                                Grievance grievance = new Grievance(obj.getString("_id"), obj.getString("reg_no"), obj.getString("name"), obj.getString("email"), obj.getString("message"), obj.getString("status"), obj.getLong("timestamp"));
+                                al.add(grievance);
                             }
-                            StudentAdapter adapter = new StudentAdapter(AdminManageStudentsActivity.this, al);
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(AdminManageStudentsActivity.this));
+                            GrievanceAdapter adapter = new GrievanceAdapter(AdminResolveActivity.this, user.getString("token", ""), al);
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(AdminResolveActivity.this));
                             binding.recyclerView.setAdapter(adapter);
                         }
                         else
-                            Toast.makeText(AdminManageStudentsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminResolveActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         stopLoading();
                     } catch (Exception e) {
                         binding.animationViewLoading.pauseAnimation();
@@ -112,7 +107,7 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(AdminManageStudentsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(AdminResolveActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

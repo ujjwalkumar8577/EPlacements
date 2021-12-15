@@ -40,7 +40,7 @@
         android:id="@+id/layoutBanner"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="36dp"
         android:background="@drawable/bg_input"
         android:orientation="horizontal"
@@ -284,7 +284,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Solve Grievances"
+            android:text="Resolve Grievances"
             android:textColor="@color/gray"
             android:textStyle="bold" />
     </LinearLayout>

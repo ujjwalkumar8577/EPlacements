@@ -17,6 +17,7 @@ import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.adapters.RegisteredCompanyAdapter;
 import com.ujjwalkumar.eplacements.databinding.ActivityRegisteredCompaniesBinding;
 import com.ujjwalkumar.eplacements.models.RegisteredCompany;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ public class RegisteredCompaniesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRegisteredCompaniesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        EPlacementsUtil.checkInternetConnection(this);
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();

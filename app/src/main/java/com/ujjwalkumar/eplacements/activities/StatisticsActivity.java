@@ -20,6 +20,7 @@ import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityStatisticsBinding;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,6 +43,8 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityStatisticsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        EPlacementsUtil.checkInternetConnection(this);
 
         year = binding.spinnerYear.getSelectedItem().toString();
         pie = AnyChart.pie();
@@ -115,6 +118,7 @@ public class StatisticsActivity extends AppCompatActivity {
                             binding.chartView.setChart(pie);
 
                             binding.scrollView.fullScroll(View.FOCUS_UP);
+                            binding.horizontalScrollView.fullScroll(View.FOCUS_LEFT);
                         }
                         else
                             Toast.makeText(StatisticsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();

@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +30,7 @@ import java.util.Map;
 public class CompleteProfileActivity extends AppCompatActivity {
 
     private boolean dateSet = false;
+    private int select = -1;
     private ActivityCompleteProfileBinding binding;
     private SharedPreferences user;
     private StudentProfile studentProfile;
@@ -72,7 +73,25 @@ public class CompleteProfileActivity extends AppCompatActivity {
             updateStudent();
         });
 
-        initialiseValues();
+        binding.buttonUpdateStatus.setOnClickListener(view -> {
+            String[] arr = getResources().getStringArray(R.array.status);
+            select = search(arr, studentProfile.status);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Update status")
+                    .setCancelable(false)
+                    .setSingleChoiceItems(arr, select, (dialog, which) -> select = which)
+                    .setPositiveButton("Yes", (dialog, id) -> {
+                        if(select>0)
+                            updateStatus(arr[select], "");
+                    })
+                    .setNegativeButton("No", (dialog, id) -> dialog.cancel())
+                    .show();
+        });
+
+        if(studentProfile.remarks!=null)
+            initialiseValues();
+        else
+            getUser();
     }
 
     public void showDateTimePicker() {
@@ -182,7 +201,42 @@ public class CompleteProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.d("post data", postData.toString());
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+
+                        }
+                        Toast.makeText(CompleteProfileActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(CompleteProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/json");
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    public void updateStatus(String updatedStatus, String remarks) {
+        String url = getString(R.string.base_url) + "admin/setStatus";
+        JSONObject postData = new JSONObject();
+        try {
+            studentProfile.status = updatedStatus;
+            studentProfile.remarks = remarks;
+            postData.put("reg_no", studentProfile.reg_no);
+            postData.put("set_status", studentProfile.status);
+            postData.put("remark", studentProfile.remarks);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
                 response -> {
@@ -206,6 +260,44 @@ public class CompleteProfileActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    public void reduceCredit(int credit)  {
+        String url = getString(R.string.base_url) + "admin/reduceCredit";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("reg_no", studentProfile.reg_no);
+            postData.put("credit", credit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            studentProfile.credits = response.getInt("final_credits");
+                        }
+                        Toast.makeText(CompleteProfileActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(CompleteProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/json");
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void getUser() {
+
     }
 
     private int search(String[] arr, String key) {

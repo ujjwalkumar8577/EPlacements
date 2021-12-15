@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ujjwalkumar.eplacements.databinding.ActivityViewPdfBinding;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 public class ViewPdfActivity extends AppCompatActivity {
 
@@ -16,6 +17,8 @@ public class ViewPdfActivity extends AppCompatActivity {
         binding = ActivityViewPdfBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        EPlacementsUtil.checkInternetConnection(this);
+
         String BASE_URL = "https://drive.google.com/viewerng/viewer?embedded=true&url=";
         String url = getIntent().getStringExtra("url");
 
@@ -23,7 +26,9 @@ public class ViewPdfActivity extends AppCompatActivity {
             super.onBackPressed();
         });
 
-        binding.webView.getSettings().setJavaScriptEnabled(true);
-        binding.webView.loadUrl(BASE_URL+url);
+//        binding.webView.getSettings().setJavaScriptEnabled(true);
+//        binding.webView.loadUrl(BASE_URL+url);
+
+        binding.webView.loadPdf(url);
     }
 }

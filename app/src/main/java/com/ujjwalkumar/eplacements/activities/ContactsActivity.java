@@ -15,6 +15,7 @@ import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.adapters.ContactAdapter;
 import com.ujjwalkumar.eplacements.databinding.ActivityContactsBinding;
 import com.ujjwalkumar.eplacements.models.Contact;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ public class ContactsActivity extends AppCompatActivity {
         binding = ActivityContactsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        EPlacementsUtil.checkInternetConnection(this);
         showInformation();
 
         binding.imageViewBack.setOnClickListener(view -> {

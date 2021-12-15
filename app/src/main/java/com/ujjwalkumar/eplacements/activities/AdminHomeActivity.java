@@ -48,15 +48,15 @@ public class AdminHomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu4.setOnClickListener(view -> {
-            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+//            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
         });
 
         binding.layoutMenu5.setOnClickListener(view -> {
-            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+//            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
         });
 
         binding.layoutMenu6.setOnClickListener(view -> {
-            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+            startActivity(new Intent(this, AdminResolveActivity.class));
         });
     }
 

@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageViewBack"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/back"/>
@@ -27,6 +27,34 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageViewBack"
         app:layout_constraintStart_toEndOf="@+id/imageViewBack"
         app:layout_constraintTop_toTopOf="@+id/imageViewBack" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/controlBar"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/controlBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <xute.markdeditor.MarkDEditor
+            android:id="@+id/mdEditor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </ScrollView>
+
+    <xute.markdeditor.EditorControlBar
+        android:id="@+id/controlBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonAdd"

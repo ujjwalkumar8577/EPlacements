@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.activities.CompleteProfileActivity;
 import com.ujjwalkumar.eplacements.models.Student;
@@ -43,11 +44,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         holder.textViewStatus.setText(status);
 
         holder.itemView.setOnClickListener(view -> {
+            Gson gson = new Gson();
+            String str = gson.toJson(obj);
+
             Intent intent = new Intent(context, CompleteProfileActivity.class);
-            intent.putExtra("name", obj.getName());
-            intent.putExtra("regno", obj.getRegNo());
-            intent.putExtra("status", obj.getStatus());
-            intent.putExtra("flag", "admin");
+            intent.putExtra("userObj", str);
             context.startActivity(intent);
         });
     }

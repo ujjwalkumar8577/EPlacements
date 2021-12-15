@@ -36,4 +36,12 @@
         <item>SC</item>
         <item>ST</item>
     </string-array>
+    <string-array name="status">
+        <item>-SELECT-</item>
+        <item>Registerd</item>
+        <item>Completed</item>
+        <item>Verified</item>
+        <item>Unverified</item>
+        <item>Placed</item>
+    </string-array>
 </resources>

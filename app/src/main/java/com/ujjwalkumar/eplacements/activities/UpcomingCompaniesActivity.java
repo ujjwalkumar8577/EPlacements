@@ -17,6 +17,7 @@ import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.adapters.UpcomingCompanyAdapter;
 import com.ujjwalkumar.eplacements.databinding.ActivityUpcomingCompaniesBinding;
 import com.ujjwalkumar.eplacements.models.UpcomingCompany;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ public class UpcomingCompaniesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUpcomingCompaniesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        EPlacementsUtil.checkInternetConnection(this);
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();

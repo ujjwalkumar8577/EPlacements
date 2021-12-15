@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu3.setOnClickListener(view -> {
-            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+//            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
         });
 
         binding.layoutMenu4.setOnClickListener(view -> {
@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu8.setOnClickListener(view -> {
-            startActivity(new Intent(this, HelpActivity.class));
+//            startActivity(new Intent(this, HelpActivity.class));
         });
     }
 
