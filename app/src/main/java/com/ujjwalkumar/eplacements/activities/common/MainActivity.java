@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.common;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ujjwalkumar.eplacements.R;
+import com.ujjwalkumar.eplacements.activities.admin.AdminHomeActivity;
+import com.ujjwalkumar.eplacements.activities.student.HomeActivity;
+import com.ujjwalkumar.eplacements.activities.student.LoginActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;

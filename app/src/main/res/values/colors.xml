@@ -12,7 +12,8 @@
     <color name="red">#F23B5F</color>
     <color name="blue">#057EE6</color>
     <color name="shimmerBg">#DDDDDD</color>
-    <color name="colorPrimary">#008577</color>
+    <color name="toastBg">#DFE31953</color>
+    <color name="colorPrimary">#284257</color>
     <color name="colorPrimaryDark">#253A4B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#E31953</color>
 </resources>

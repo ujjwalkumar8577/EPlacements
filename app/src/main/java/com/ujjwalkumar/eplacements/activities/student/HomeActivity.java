@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.student;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,13 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.ujjwalkumar.eplacements.R;
+import com.ujjwalkumar.eplacements.activities.common.ContactsActivity;
+import com.ujjwalkumar.eplacements.activities.common.NoticesActivity;
+import com.ujjwalkumar.eplacements.activities.common.StatisticsActivity;
+import com.ujjwalkumar.eplacements.activities.common.UpcomingCompaniesActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityHomeBinding;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -27,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
+        EPlacementsUtil.showToast(this, "An error occured", R.drawable.outline_error_white_24dp);
 
         binding.imageViewAccount.setOnClickListener(view -> {
             startActivity(new Intent(this, MyAccountActivity.class));
@@ -45,11 +52,11 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu3.setOnClickListener(view -> {
-//            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+            startActivity(new Intent(this, ViewExperienceActivity.class));
         });
 
         binding.layoutMenu4.setOnClickListener(view -> {
-            startActivity(new Intent(this, AddExperienceActivity.class));
+            startActivity(new Intent(this, AddExperienceActivity.class).putExtra("companyName", "Google Inc").putExtra("name", "Aman Gupta"));
         });
 
         binding.layoutMenu5.setOnClickListener(view -> {

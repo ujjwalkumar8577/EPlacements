@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.common;
 
 import android.os.Bundle;
 

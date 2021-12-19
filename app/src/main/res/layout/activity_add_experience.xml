@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".activities.AddExperienceActivity">
+    tools:context=".activities.student.AddExperienceActivity">
 
     <ImageView
         android:id="@+id/imageViewBack"
@@ -42,7 +42,7 @@
         <xute.markdeditor.MarkDEditor
             android:id="@+id/mdEditor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
     </ScrollView>
 
@@ -52,6 +52,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"
+
         app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

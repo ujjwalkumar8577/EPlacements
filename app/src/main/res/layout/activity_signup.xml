@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignupActivity">
+    tools:context=".activities.student.SignupActivity">
 
     <ImageView
         android:id="@+id/imageViewBack"
@@ -28,6 +28,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_input_rounded"
+        android:ems="10"
+        android:hint="Name"
+        android:textSize="18sp"
+        android:inputType="textPersonName"
+        android:textColor="@color/gray"
+        android:drawableStart="@drawable/outline_person_outline_black_24dp"
+        android:drawableTint="@color/gray"
+        android:drawablePadding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
         android:id="@+id/editTextRegistration"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -35,12 +53,15 @@
         android:background="@drawable/bg_input_rounded"
         android:ems="10"
         android:hint="Registration No."
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:inputType="phone"
         android:textColor="@color/gray"
+        android:drawableStart="@drawable/outline_numbers_black_24dp"
+        android:drawableTint="@color/gray"
+        android:drawablePadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -50,9 +71,12 @@
         android:background="@drawable/bg_input_rounded"
         android:ems="10"
         android:hint="Password"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:inputType="textPassword"
         android:textColor="@color/gray"
+        android:drawableStart="@drawable/outline_lock_black_24dp"
+        android:drawableTint="@color/gray"
+        android:drawablePadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegistration" />
@@ -89,7 +113,7 @@
         android:text="Need Help?"
         android:textColor="@color/red"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/buttonSignup"
         app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
         app:layout_constraintTop_toTopOf="@+id/buttonSignup" />

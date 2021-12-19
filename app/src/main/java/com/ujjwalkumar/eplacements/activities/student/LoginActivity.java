@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.student;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +14,9 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.databinding.ActivityAdminLoginBinding;
+import com.ujjwalkumar.eplacements.activities.admin.AdminLoginActivity;
+import com.ujjwalkumar.eplacements.activities.common.ContactsActivity;
+import com.ujjwalkumar.eplacements.databinding.ActivityLoginBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,37 +24,33 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminLoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private ActivityAdminLoginBinding binding;
+    private ActivityLoginBinding binding;
     private SharedPreferences user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAdminLoginBinding.inflate(getLayoutInflater());
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         binding.buttonLogin.setOnClickListener(view -> {
-            String email = binding.editTextEmail.getText().toString();
+            String regno = binding.editTextRegistration.getText().toString();
             String password = binding.editTextPassword.getText().toString();
-            if(!email.equals("")) {
+            if(!regno.equals("")) {
                 if(!password.equals("")) {
-                    loginAdmin(email, password);
+                    loginStudent(regno, password);
                 }
                 else {
                     binding.editTextPassword.setError("Enter password");
                 }
             }
             else {
-                binding.editTextEmail.setError("Enter email");
+                binding.editTextRegistration.setError("Enter registration no.");
             }
-        });
-
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
         });
 
         binding.textViewHelp.setOnClickListener(view -> {
@@ -61,15 +59,29 @@ public class AdminLoginActivity extends AppCompatActivity {
             in.setClass(getApplicationContext(), ContactsActivity.class);
             startActivity(in);
         });
+
+        binding.textViewAdmin.setOnClickListener(view -> {
+            Intent in = new Intent();
+            in.setAction(Intent.ACTION_VIEW);
+            in.setClass(getApplicationContext(), AdminLoginActivity.class);
+            startActivity(in);
+        });
+
+        binding.textViewSignup.setOnClickListener(view -> {
+            Intent in = new Intent();
+            in.setAction(Intent.ACTION_VIEW);
+            in.setClass(getApplicationContext(), SignupActivity.class);
+            startActivity(in);
+        });
     }
 
-    private void loginAdmin(String email, String password) {
+    private void loginStudent(String regno, String password) {
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
-        String url = getString(R.string.base_url) + "admin/loginAdmin";
+        String url = getString(R.string.base_url) + "student/loginStudent";
         JSONObject postData = new JSONObject();
         try {
-            postData.put("email", email);
+            postData.put("reg_no", regno);
             postData.put("password", password);
 
         } catch (JSONException e) {
@@ -81,24 +93,32 @@ public class AdminLoginActivity extends AppCompatActivity {
                     try {
                         if(response.getBoolean("success")) {
                             String name = response.getJSONObject("user").getString("name");
-                            String email1 = response.getJSONObject("user").getString("email");
+                            String regno1 = response.getJSONObject("user").getString("reg_no");
+                            String course = response.getJSONObject("user").getString("course");
+                            String branch = response.getJSONObject("user").getString("branch");
+                            String status = response.getJSONObject("user").getString("status");
+                            String credits = response.getJSONObject("user").getString("credits");
                             String token = response.getString("token");
                             user.edit().putString("name", name).apply();
-                            user.edit().putString("id", email1).apply();
+                            user.edit().putString("id", regno1).apply();
+                            user.edit().putString("course", course).apply();
+                            user.edit().putString("branch", branch).apply();
+                            user.edit().putString("status", status).apply();
+                            user.edit().putString("credits", credits).apply();
                             user.edit().putString("token", token).apply();
-                            user.edit().putString("type", "admin").apply();
+                            user.edit().putString("type", "student").apply();
                             binding.animationViewLoading.pauseAnimation();
                             binding.animationViewLoading.setVisibility(View.GONE);
-                            Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
 
                             Intent in = new Intent();
                             in.setAction(Intent.ACTION_VIEW);
-                            in.setClass(getApplicationContext(), AdminHomeActivity.class);
+                            in.setClass(getApplicationContext(), HomeActivity.class);
                             startActivity(in);
-                            finishAffinity();
+                            finish();
                         }
                         else
-                            Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
                         binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
@@ -107,7 +127,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(AdminLoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

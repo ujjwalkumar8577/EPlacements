@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.activities.CompleteProfileActivity;
+import com.ujjwalkumar.eplacements.activities.common.CompleteProfileActivity;
 import com.ujjwalkumar.eplacements.models.Student;
 
 import java.util.ArrayList;

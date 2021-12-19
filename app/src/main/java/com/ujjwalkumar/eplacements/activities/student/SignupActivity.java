@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.student;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +14,8 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.databinding.ActivityLoginBinding;
+import com.ujjwalkumar.eplacements.activities.common.ContactsActivity;
+import com.ujjwalkumar.eplacements.databinding.ActivitySignupBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,25 +23,25 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
 
-    private ActivityLoginBinding binding;
+    private ActivitySignupBinding binding;
     private SharedPreferences user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
-        binding.buttonLogin.setOnClickListener(view -> {
+        binding.buttonSignup.setOnClickListener(view -> {
             String regno = binding.editTextRegistration.getText().toString();
             String password = binding.editTextPassword.getText().toString();
             if(!regno.equals("")) {
                 if(!password.equals("")) {
-                    loginStudent(regno, password);
+                    signupStudent(regno, password);
                 }
                 else {
                     binding.editTextPassword.setError("Enter password");
@@ -51,32 +52,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
+
         binding.textViewHelp.setOnClickListener(view -> {
             Intent in = new Intent();
             in.setAction(Intent.ACTION_VIEW);
             in.setClass(getApplicationContext(), ContactsActivity.class);
             startActivity(in);
         });
-
-        binding.textViewAdmin.setOnClickListener(view -> {
-            Intent in = new Intent();
-            in.setAction(Intent.ACTION_VIEW);
-            in.setClass(getApplicationContext(), AdminLoginActivity.class);
-            startActivity(in);
-        });
-
-        binding.textViewSignup.setOnClickListener(view -> {
-            Intent in = new Intent();
-            in.setAction(Intent.ACTION_VIEW);
-            in.setClass(getApplicationContext(), SignupActivity.class);
-            startActivity(in);
-        });
     }
 
-    private void loginStudent(String regno, String password) {
+    private void signupStudent(String regno, String password) {
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
-        String url = getString(R.string.base_url) + "student/loginStudent";
+        String url = getString(R.string.base_url) + "student/registerStudent";
         JSONObject postData = new JSONObject();
         try {
             postData.put("reg_no", regno);
@@ -107,16 +96,16 @@ public class LoginActivity extends AppCompatActivity {
                             user.edit().putString("type", "student").apply();
                             binding.animationViewLoading.pauseAnimation();
                             binding.animationViewLoading.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
 
                             Intent in = new Intent();
                             in.setAction(Intent.ACTION_VIEW);
                             in.setClass(getApplicationContext(), HomeActivity.class);
                             startActivity(in);
-                            finish();
+                            finishAffinity();
                         }
                         else
-                            Toast.makeText(LoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
                         binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
@@ -125,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(SignupActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

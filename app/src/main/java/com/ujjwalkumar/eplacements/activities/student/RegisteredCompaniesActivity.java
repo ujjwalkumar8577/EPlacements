@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.student;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -14,9 +14,9 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.adapters.UpcomingCompanyAdapter;
-import com.ujjwalkumar.eplacements.databinding.ActivityUpcomingCompaniesBinding;
-import com.ujjwalkumar.eplacements.models.UpcomingCompany;
+import com.ujjwalkumar.eplacements.adapters.RegisteredCompanyAdapter;
+import com.ujjwalkumar.eplacements.databinding.ActivityRegisteredCompaniesBinding;
+import com.ujjwalkumar.eplacements.models.RegisteredCompany;
 import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
@@ -26,16 +26,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpcomingCompaniesActivity extends AppCompatActivity {
+public class RegisteredCompaniesActivity extends AppCompatActivity {
 
-    private ArrayList<UpcomingCompany> al;
-    private ActivityUpcomingCompaniesBinding binding;
+    private ArrayList<RegisteredCompany> al;
+    private ActivityRegisteredCompaniesBinding binding;
     private SharedPreferences user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUpcomingCompaniesBinding.inflate(getLayoutInflater());
+        binding = ActivityRegisteredCompaniesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         EPlacementsUtil.checkInternetConnection(this);
@@ -50,33 +50,34 @@ public class UpcomingCompaniesActivity extends AppCompatActivity {
 
     private void showInformation() {
         startLoading();
-        String url = getString(R.string.base_url) + "currentOpening";
+        String url = getString(R.string.base_url) + "student/getRegisteredCompanies";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray companies = response.getJSONArray("company");
+                            JSONArray companies = response.getJSONArray("companies");
                             al = new ArrayList<>();
                             for(int i=0; i< companies.length(); i++) {
-                                JSONObject obj = companies.getJSONObject(i);
-                                UpcomingCompany upcomingCompany = new UpcomingCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), obj.getLong("reg_deadline"));
-                                al.add(upcomingCompany);
+                                JSONObject obj = companies.getJSONObject(i).getJSONObject("company");
+                                long timestamp = companies.getJSONObject(i).getLong("timestamp");
+                                RegisteredCompany registeredCompany = new RegisteredCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), timestamp);
+                                al.add(registeredCompany);
                             }
 
-                            UpcomingCompanyAdapter adapter = new UpcomingCompanyAdapter(UpcomingCompaniesActivity.this, al);
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(UpcomingCompaniesActivity.this));
+                            RegisteredCompanyAdapter adapter = new RegisteredCompanyAdapter(RegisteredCompaniesActivity.this, al);
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(RegisteredCompaniesActivity.this));
                             binding.recyclerView.setAdapter(adapter);
                         }
                         else
-                            Toast.makeText(UpcomingCompaniesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisteredCompaniesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         stopLoading();
                     } catch (Exception e) {
                         stopLoading();
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(UpcomingCompaniesActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(RegisteredCompaniesActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.admin;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;

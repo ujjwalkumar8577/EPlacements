@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.activities.CompanyDetailsActivity;
+import com.ujjwalkumar.eplacements.activities.common.CompanyDetailsActivity;
 import com.ujjwalkumar.eplacements.models.UpcomingCompany;
 
 import java.util.ArrayList;

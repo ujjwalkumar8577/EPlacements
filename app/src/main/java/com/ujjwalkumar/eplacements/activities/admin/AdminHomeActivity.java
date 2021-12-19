@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.admin;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.ujjwalkumar.eplacements.activities.common.NoticesActivity;
+import com.ujjwalkumar.eplacements.activities.common.UpcomingCompaniesActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityAdminHomeBinding;
 
 public class AdminHomeActivity extends AppCompatActivity {

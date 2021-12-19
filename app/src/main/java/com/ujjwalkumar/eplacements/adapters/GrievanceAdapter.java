@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -59,6 +60,10 @@ public class GrievanceAdapter extends RecyclerView.Adapter<GrievanceAdapter.Grie
         else
             holder.textViewResolve.setVisibility(View.VISIBLE);
 
+        holder.layout.setOnClickListener(view -> {
+            holder.textViewMessage.setMaxLines(1000);
+        });
+
         holder.textViewEmail.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:" + obj.getEmail()));
@@ -78,10 +83,12 @@ public class GrievanceAdapter extends RecyclerView.Adapter<GrievanceAdapter.Grie
 
     public static class GrievanceViewHolder extends RecyclerView.ViewHolder {
 
+        ConstraintLayout layout;
         TextView textViewName, textViewEmail, textViewRegNo, textViewMessage, textViewTimestamp, textViewResolve;
 
         public GrievanceViewHolder(@NonNull View itemView) {
             super(itemView);
+            layout = itemView.findViewById(R.id.layout);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewEmail = itemView.findViewById(R.id.textViewEmail);
             textViewRegNo = itemView.findViewById(R.id.textViewRegNo);

@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.student;
 
 import static xute.markdeditor.Styles.TextComponentStyle.BLOCKQUOTE;
 import static xute.markdeditor.Styles.TextComponentStyle.H1;
@@ -7,17 +7,26 @@ import static xute.markdeditor.components.TextComponentItem.MODE_PLAIN;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
+import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityAddExperienceBinding;
 
 import java.util.ArrayList;
@@ -30,6 +39,8 @@ import xute.markdeditor.utilities.FilePathUtils;
 public class AddExperienceActivity extends AppCompatActivity implements EditorControlBar.EditorControlListener {
 
     private static final int REQUEST_IMAGE_SELECTOR = 930;
+    private String companyName = "";
+    private String name = "";
     private ActivityAddExperienceBinding binding;
 
     @Override
@@ -37,6 +48,9 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         super.onCreate(savedInstanceState);
         binding = ActivityAddExperienceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        companyName = getIntent().getStringExtra("companyName");
+        name = getIntent().getStringExtra("name");
 
         binding.imageViewBack.setOnClickListener(view -> {
             super.onBackPressed();
@@ -68,18 +82,28 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         ArrayList<DraftDataItemModel> contentTypes = new ArrayList<>();
         DraftDataItemModel heading = new DraftDataItemModel();
         heading.setItemType(DraftModel.ITEM_TYPE_TEXT);
-        heading.setContent("Google Inc");
+        heading.setContent(companyName);
         heading.setMode(MODE_PLAIN);
         heading.setStyle(H1);
 
         DraftDataItemModel sub_heading = new DraftDataItemModel();
         sub_heading.setItemType(DraftModel.ITEM_TYPE_TEXT);
-        sub_heading.setContent("Aman Gupta");
+        sub_heading.setContent(name);
         sub_heading.setMode(MODE_PLAIN);
         sub_heading.setStyle(H3);
 
+        DraftDataItemModel separator = new DraftDataItemModel();
+        separator.setItemType(DraftModel.ITEM_TYPE_HR);
+
+        DraftDataItemModel main_content = new DraftDataItemModel();
+        main_content.setItemType(DraftModel.ITEM_TYPE_TEXT);
+        main_content.setContent("");
+        main_content.setMode(MODE_PLAIN);
+
         contentTypes.add(heading);
         contentTypes.add(sub_heading);
+        contentTypes.add(separator);
+        contentTypes.add(main_content);
         return new DraftModel(contentTypes);
     }
 
@@ -89,28 +113,25 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         if (requestCode == REQUEST_IMAGE_SELECTOR) {
             if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
                 Uri uri = data.getData();
-                String filePath = FilePathUtils.getPath(this, uri);
+                String filePath = FilePathUtils.getPath(AddExperienceActivity.this, uri);
                 addImage(filePath);
             }
         }
     }
 
     public void addImage(String filePath) {
-        binding.mdEditor.insertImage(filePath);
+        binding.mdEditor.insertImage(filePath, false, "caption");
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_IMAGE_SELECTOR:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openGallery();
-                } else {
-                    //do something like displaying a message that he didn`t allow the app to access gallery and you wont be able to let him select from gallery
-                    //Toast.makeText()"Permission not granted to access images.");
-                }
-                break;
+        if (requestCode == REQUEST_IMAGE_SELECTOR) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                Toast.makeText(AddExperienceActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -137,6 +158,33 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
 
     @Override
     public void onInserLinkClicked() {
-        binding.mdEditor.addLink("Click Here", "http://www.hapramp.com");
+        LayoutInflater li = LayoutInflater.from(AddExperienceActivity.this);
+        View promptsView = li.inflate(R.layout.dialog_add_link, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddExperienceActivity.this);
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput1 = promptsView.findViewById(R.id.editTextDialogUserInput1);
+        final EditText userInput2 = promptsView.findViewById(R.id.editTextDialogUserInput2);
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Insert",
+                        (dialog, id) -> {
+                            String text = userInput1.getText().toString();
+                            String url = userInput2.getText().toString();
+                            if(text.equals("") || url.equals(""))
+                                Toast.makeText(AddExperienceActivity.this, "Empty text or link", Toast.LENGTH_SHORT).show();
+                            else
+                                binding.mdEditor.addLink(text, url);
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        alertDialog.getWindow().setBackgroundDrawable(AppCompatResources.getDrawable(AddExperienceActivity.this, R.color.gray));
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
     }
 }

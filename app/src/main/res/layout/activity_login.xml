@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.student.LoginActivity">
 
     <TextView
         android:id="@+id/textView3"
@@ -29,6 +29,9 @@
         android:textSize="18sp"
         android:inputType="phone"
         android:textColor="@color/gray"
+        android:drawableStart="@drawable/outline_numbers_black_24dp"
+        android:drawableTint="@color/gray"
+        android:drawablePadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -44,6 +47,9 @@
         android:textSize="18sp"
         android:inputType="textPassword"
         android:textColor="@color/gray"
+        android:drawableStart="@drawable/outline_lock_black_24dp"
+        android:drawableTint="@color/gray"
+        android:drawablePadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegistration" />

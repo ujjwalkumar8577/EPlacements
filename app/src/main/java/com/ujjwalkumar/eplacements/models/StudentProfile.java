@@ -7,7 +7,10 @@ public class StudentProfile {
     intern_title, intern_desc;
     public boolean physically_challenged;
     public int credits, year_10, year_12, backlogs;
-    public float percent_10, percent_12, spi[], cpi;
+    public float percent_10;
+    public float percent_12;
+    public float[] spi;
+    public float cpi;
 
     public StudentProfile(String reg_no, String name, String course, String branch, String dob, String email, String skype_id, String linkedin_id, String gender, String category, String residential_status, String guardian, String present_address, String permanent_address, String maritial_status, String state, String country, String photo, String resume, String status, String remarks, String school_10, String board_10, String school_12, String board_12, String project_title, String project_desc, String intern_title, String intern_desc, boolean physically_challenged, int credits, int year_10, int year_12, int backlogs, float percent_10, float percent_12, float[] spi, float cpi) {
         this.reg_no = reg_no;

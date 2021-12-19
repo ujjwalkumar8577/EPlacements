@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.admin;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +14,8 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.databinding.ActivitySignupBinding;
+import com.ujjwalkumar.eplacements.activities.common.ContactsActivity;
+import com.ujjwalkumar.eplacements.databinding.ActivityAdminLoginBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,36 +23,38 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignupActivity extends AppCompatActivity {
+public class AdminLoginActivity extends AppCompatActivity {
 
-    private ActivitySignupBinding binding;
+    private ActivityAdminLoginBinding binding;
     private SharedPreferences user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySignupBinding.inflate(getLayoutInflater());
+        binding = ActivityAdminLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
-        binding.buttonSignup.setOnClickListener(view -> {
-            String regno = binding.editTextRegistration.getText().toString();
+        binding.buttonLogin.setOnClickListener(view -> {
+            String email = binding.editTextEmail.getText().toString();
             String password = binding.editTextPassword.getText().toString();
-            if(!regno.equals("")) {
+            if(!email.equals("")) {
                 if(!password.equals("")) {
-                    signupStudent(regno, password);
+                    loginAdmin(email, password);
                 }
                 else {
                     binding.editTextPassword.setError("Enter password");
                 }
             }
             else {
-                binding.editTextRegistration.setError("Enter registration no.");
+                binding.editTextEmail.setError("Enter email");
             }
         });
 
-        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
+        binding.imageViewBack.setOnClickListener(view -> {
+            super.onBackPressed();
+        });
 
         binding.textViewHelp.setOnClickListener(view -> {
             Intent in = new Intent();
@@ -61,13 +64,13 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void signupStudent(String regno, String password) {
+    private void loginAdmin(String email, String password) {
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
-        String url = getString(R.string.base_url) + "student/registerStudent";
+        String url = getString(R.string.base_url) + "admin/loginAdmin";
         JSONObject postData = new JSONObject();
         try {
-            postData.put("reg_no", regno);
+            postData.put("email", email);
             postData.put("password", password);
 
         } catch (JSONException e) {
@@ -79,32 +82,24 @@ public class SignupActivity extends AppCompatActivity {
                     try {
                         if(response.getBoolean("success")) {
                             String name = response.getJSONObject("user").getString("name");
-                            String regno1 = response.getJSONObject("user").getString("reg_no");
-                            String course = response.getJSONObject("user").getString("course");
-                            String branch = response.getJSONObject("user").getString("branch");
-                            String status = response.getJSONObject("user").getString("status");
-                            String credits = response.getJSONObject("user").getString("credits");
+                            String email1 = response.getJSONObject("user").getString("email");
                             String token = response.getString("token");
                             user.edit().putString("name", name).apply();
-                            user.edit().putString("id", regno1).apply();
-                            user.edit().putString("course", course).apply();
-                            user.edit().putString("branch", branch).apply();
-                            user.edit().putString("status", status).apply();
-                            user.edit().putString("credits", credits).apply();
+                            user.edit().putString("id", email1).apply();
                             user.edit().putString("token", token).apply();
-                            user.edit().putString("type", "student").apply();
+                            user.edit().putString("type", "admin").apply();
                             binding.animationViewLoading.pauseAnimation();
                             binding.animationViewLoading.setVisibility(View.GONE);
-                            Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
 
                             Intent in = new Intent();
                             in.setAction(Intent.ACTION_VIEW);
-                            in.setClass(getApplicationContext(), HomeActivity.class);
+                            in.setClass(getApplicationContext(), AdminHomeActivity.class);
                             startActivity(in);
                             finishAffinity();
                         }
                         else
-                            Toast.makeText(SignupActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminLoginActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         binding.animationViewLoading.pauseAnimation();
                         binding.animationViewLoading.setVisibility(View.GONE);
                     } catch (Exception e) {
@@ -113,7 +108,7 @@ public class SignupActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(SignupActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(AdminLoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

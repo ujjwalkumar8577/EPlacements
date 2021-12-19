@@ -1,7 +1,5 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.common;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -14,9 +12,9 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.adapters.RegisteredCompanyAdapter;
-import com.ujjwalkumar.eplacements.databinding.ActivityRegisteredCompaniesBinding;
-import com.ujjwalkumar.eplacements.models.RegisteredCompany;
+import com.ujjwalkumar.eplacements.adapters.ContactAdapter;
+import com.ujjwalkumar.eplacements.databinding.ActivityContactsBinding;
+import com.ujjwalkumar.eplacements.models.Contact;
 import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONArray;
@@ -26,21 +24,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisteredCompaniesActivity extends AppCompatActivity {
+public class ContactsActivity extends AppCompatActivity {
 
-    private ArrayList<RegisteredCompany> al;
-    private ActivityRegisteredCompaniesBinding binding;
-    private SharedPreferences user;
+    private ArrayList<Contact> al;
+    private ActivityContactsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRegisteredCompaniesBinding.inflate(getLayoutInflater());
+        binding = ActivityContactsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         EPlacementsUtil.checkInternetConnection(this);
-
-        user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
         binding.imageViewBack.setOnClickListener(view -> {
@@ -50,38 +45,35 @@ public class RegisteredCompaniesActivity extends AppCompatActivity {
 
     private void showInformation() {
         startLoading();
-        String url = getString(R.string.base_url) + "student/getRegisteredCompanies";
+        String url = getString(R.string.base_url) + "getContact";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            JSONArray companies = response.getJSONArray("companies");
+                            JSONArray contacts = response.getJSONArray("contacts");
                             al = new ArrayList<>();
-                            for(int i=0; i< companies.length(); i++) {
-                                JSONObject obj = companies.getJSONObject(i).getJSONObject("company");
-                                long timestamp = companies.getJSONObject(i).getLong("timestamp");
-                                RegisteredCompany registeredCompany = new RegisteredCompany(obj.getString("_id"), obj.getString("name"), obj.getString("job_profile"), obj.getDouble("ctc"), timestamp);
-                                al.add(registeredCompany);
+                            for(int i=0; i< contacts.length(); i++) {
+                                JSONObject obj = contacts.getJSONObject(i);
+                                Contact contact = new Contact(obj.getString("name"), obj.getString("role"), obj.getString("degree_course"), obj.getString("phone"), obj.getString("email"), obj.getString("photo"));
+                                al.add(contact);
                             }
-
-                            RegisteredCompanyAdapter adapter = new RegisteredCompanyAdapter(RegisteredCompaniesActivity.this, al);
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(RegisteredCompaniesActivity.this));
+                            ContactAdapter adapter = new ContactAdapter(ContactsActivity.this, al);
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(ContactsActivity.this));
                             binding.recyclerView.setAdapter(adapter);
                         }
                         else
-                            Toast.makeText(RegisteredCompaniesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ContactsActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         stopLoading();
                     } catch (Exception e) {
                         stopLoading();
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(RegisteredCompaniesActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(ContactsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("Authorization", user.getString("token", ""));
                 return params;
             }
         };

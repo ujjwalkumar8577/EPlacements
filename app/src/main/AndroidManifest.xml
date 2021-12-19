@@ -14,69 +14,72 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EPlacements">
         <activity
-            android:name=".activities.AdminResolveActivity"
+            android:name=".activities.student.ViewExperienceActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.AddExperienceActivity"
+            android:name=".activities.admin.AdminResolveActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.StatisticsActivity"
+            android:name=".activities.student.AddExperienceActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ViewPdfActivity"
+            android:name=".activities.common.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.AdminManageStudentsActivity"
+            android:name=".activities.common.ViewPdfActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.AdminAddCompanyActivity"
+            android:name=".activities.admin.AdminManageStudentsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.AdminMyAccountActivity"
+            android:name=".activities.admin.AdminAddCompanyActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.NoticesActivity"
+            android:name=".activities.admin.AdminMyAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CompanyDetailsActivity"
+            android:name=".activities.common.NoticesActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ContactsActivity"
+            android:name=".activities.common.CompanyDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.RegisteredCompaniesActivity"
+            android:name=".activities.common.ContactsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.UpcomingCompaniesActivity"
+            android:name=".activities.student.RegisteredCompaniesActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MyAccountActivity"
+            android:name=".activities.common.UpcomingCompaniesActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CompleteProfileActivity"
+            android:name=".activities.student.MyAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.AdminHomeActivity"
+            android:name=".activities.common.CompleteProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".activities.admin.AdminHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.student.HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.EPlacements.NoActionBar" />
         <activity
-            android:name=".activities.HelpActivity"
+            android:name=".activities.student.HelpActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignupActivity"
+            android:name=".activities.student.SignupActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.AdminLoginActivity"
+            android:name=".activities.admin.AdminLoginActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activities.student.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.common.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

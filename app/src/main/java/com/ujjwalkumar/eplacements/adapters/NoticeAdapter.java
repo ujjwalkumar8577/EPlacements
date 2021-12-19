@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ujjwalkumar.eplacements.R;
@@ -38,14 +39,8 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
         holder.textViewContent.setText(obj.getContent());
         holder.textViewTimestamp.setText(obj.getTimeString());
 
-//        if(holder.textViewContent.getLineCount()>=2 && obj.getContent().charAt(holder.textViewContent.getLayout().getLineEnd(1))=='.')
-//            holder.textViewMore.setVisibility(View.VISIBLE);
-//        else
-//            holder.textViewMore.setVisibility(View.GONE);
-
-        holder.textViewMore.setOnClickListener(view -> {
+        holder.layout.setOnClickListener(view -> {
             holder.textViewContent.setMaxLines(1000);
-            holder.textViewMore.setVisibility(View.GONE);
         });
     }
 
@@ -56,13 +51,14 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
 
     public static class NoticeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewTitle, textViewContent, textViewMore, textViewTimestamp;
+        ConstraintLayout layout;
+        TextView textViewTitle, textViewContent, textViewTimestamp;
 
         public NoticeViewHolder(@NonNull View itemView) {
             super(itemView);
+            layout = itemView.findViewById(R.id.layout);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewContent = itemView.findViewById(R.id.textViewContent);
-            textViewMore = itemView.findViewById(R.id.textViewMore);
             textViewTimestamp = itemView.findViewById(R.id.textViewTimestamp);
         }
     }

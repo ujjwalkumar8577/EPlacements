@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.admin;
 
 import android.Manifest;
 import android.app.Activity;
@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ujjwalkumar.eplacements.R;
+import com.ujjwalkumar.eplacements.activities.student.LoginActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityAdminMyAccountBinding;
 
 import org.json.JSONException;
@@ -44,7 +45,7 @@ import java.util.Random;
 
 public class AdminMyAccountActivity extends AppCompatActivity {
 
-    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private final int PICK_IMAGE_REQUEST = 11;
     private String photoURL;
     private ActivityAdminMyAccountBinding binding;
@@ -259,6 +260,36 @@ public class AdminMyAccountActivity extends AppCompatActivity {
     }
 
     private void updatePhoto(String downloadURL) {
-        Toast.makeText(AdminMyAccountActivity.this, downloadURL, Toast.LENGTH_SHORT).show();
+        String url = getString(R.string.base_url) + "admin/updateAdmin";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("photoURL", downloadURL);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            photoURL = downloadURL;
+                        }
+                        else
+                            Toast.makeText(AdminMyAccountActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(AdminMyAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 }

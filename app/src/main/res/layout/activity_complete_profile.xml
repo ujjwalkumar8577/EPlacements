@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".activities.CompleteProfileActivity">
+    tools:context=".activities.common.CompleteProfileActivity">
 
     <ImageView
         android:id="@+id/imageViewBack"

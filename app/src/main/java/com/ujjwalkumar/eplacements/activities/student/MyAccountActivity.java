@@ -1,4 +1,4 @@
-package com.ujjwalkumar.eplacements.activities;
+package com.ujjwalkumar.eplacements.activities.student;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,12 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -36,13 +34,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
+import com.ujjwalkumar.eplacements.activities.common.CompleteProfileActivity;
+import com.ujjwalkumar.eplacements.activities.common.ViewPdfActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityMyAccountBinding;
 import com.ujjwalkumar.eplacements.models.StudentProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +49,7 @@ import java.util.Random;
 
 public class MyAccountActivity extends AppCompatActivity {
 
-    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private final int PICK_IMAGE_REQUEST = 22;
     private final int PICK_RESUME_REQUEST = 33;
     private String photoURL, resumeURL;
@@ -337,17 +336,5 @@ public class MyAccountActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
-
-    private String bitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] bytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(bytes, Base64.DEFAULT);
-    }
-
-    private Bitmap base64ToBitmap(String encodedImage) {
-        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }

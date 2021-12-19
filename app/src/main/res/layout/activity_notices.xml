@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".activities.NoticesActivity">
+    tools:context=".activities.common.NoticesActivity">
 
     <ImageView
         android:id="@+id/imageViewBack"
