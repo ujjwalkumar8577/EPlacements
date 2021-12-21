@@ -61,7 +61,7 @@ public class EPlacementsUtil {
         text.setText(message);
 
         Toast toast = new Toast(context);
-        toast.setGravity(Gravity.FILL_HORIZONTAL|Gravity.BOTTOM, 0, 50);
+        toast.setGravity(Gravity.FILL_HORIZONTAL|Gravity.BOTTOM, 50, 50);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();

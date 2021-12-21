@@ -35,7 +35,7 @@ import ir.androidexception.datatable.model.DataTableRow;
 public class StatisticsActivity extends AppCompatActivity {
 
     private String year;
-    private Pie pie;
+    private Pie pie1, pie2;
     private ActivityStatisticsBinding binding;
 
     @Override
@@ -47,7 +47,8 @@ public class StatisticsActivity extends AppCompatActivity {
         EPlacementsUtil.checkInternetConnection(this);
 
         year = binding.spinnerYear.getSelectedItem().toString();
-        pie = AnyChart.pie();
+        pie1 = AnyChart.pie();
+        pie2 = AnyChart.pie();
 
         binding.imageViewBack.setOnClickListener(view -> {
             super.onBackPressed();
@@ -88,7 +89,8 @@ public class StatisticsActivity extends AppCompatActivity {
                             }
                             headerData2.set(0, 2);
 
-                            ArrayList<DataEntry> pieData = new ArrayList<>();
+                            ArrayList<DataEntry> pieData1 = new ArrayList<>();
+                            ArrayList<DataEntry> pieData2 = new ArrayList<>();
                             ArrayList<DataTableRow> rows = new ArrayList<>();
                             for(int i=0; i< arr.length(); i++) {
                                 JSONObject obj = arr.getJSONObject(i);
@@ -97,25 +99,39 @@ public class StatisticsActivity extends AppCompatActivity {
                                     rowData.add(obj.get(headerData1.get(j)).toString());
                                 }
                                 rows.add(new DataTableRow(rowData));
-                                pieData.add(new ValueDataEntry(obj.getString("Branch"), obj.getDouble("% Placement")));
+                                pieData1.add(new ValueDataEntry(obj.getString("Branch"), obj.getDouble("% Placement")));
+                                pieData2.add(new ValueDataEntry(obj.getString("Branch"), obj.getDouble("Avg CTC (in LPA)")));
                             }
 
                             binding.dataTable.setHeader(new DataTableHeader(headerData1, headerData2));
                             binding.dataTable.setRows(rows);
                             binding.dataTable.inflate(StatisticsActivity.this);
 
-                            pie.data(pieData);
-                            pie.title("% Placement in year " + year);
-                            pie.labels().position("outside");
-                            pie.legend().title().enabled(true);
-                            pie.legend().title()
+                            pie1.data(pieData1);
+                            pie1.title("% Placement in year " + year);
+                            pie1.labels().position("outside");
+                            pie1.legend().title().enabled(true);
+                            pie1.legend().title()
                                     .text("Branch")
                                     .padding(0d, 0d, 10d, 0d);
-                            pie.legend()
+                            pie1.legend()
                                     .position("center-bottom")
                                     .itemsLayout(LegendLayout.HORIZONTAL)
                                     .align(Align.CENTER);
-                            binding.chartView.setChart(pie);
+                            binding.chartView1.setChart(pie1);
+
+                            pie2.data(pieData2);
+                            pie2.title("Avg. CTC in year " + year);
+                            pie2.labels().position("outside");
+                            pie2.legend().title().enabled(true);
+                            pie2.legend().title()
+                                    .text("Branch")
+                                    .padding(0d, 0d, 10d, 0d);
+                            pie2.legend()
+                                    .position("center-bottom")
+                                    .itemsLayout(LegendLayout.HORIZONTAL)
+                                    .align(Align.CENTER);
+                            binding.chartView2.setChart(pie2);
 
                             binding.scrollView.fullScroll(View.FOCUS_UP);
                             binding.horizontalScrollView.fullScroll(View.FOCUS_LEFT);

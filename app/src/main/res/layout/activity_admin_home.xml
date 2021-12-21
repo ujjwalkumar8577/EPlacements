@@ -222,7 +222,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Deduct Credits"
+            android:text="Statistics"
             android:textColor="@color/gray"
             android:textStyle="bold" />
     </LinearLayout>

@@ -29,6 +29,10 @@ public class ViewPdfActivity extends AppCompatActivity {
 //        binding.webView.getSettings().setJavaScriptEnabled(true);
 //        binding.webView.loadUrl(BASE_URL+url);
 
-        binding.webView.loadPdf(url);
+//        binding.webView.loadPdf(url);
+
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setData(Uri.parse(url));
+//        startActivity(intent);
     }
 }

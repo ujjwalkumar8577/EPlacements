@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.github.bxute:MarkDEditor:v0.16'
     implementation 'com.google.firebase:firebase-messaging:23.0.0'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:20.1.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     testImplementation 'junit:junit:4.13.2'

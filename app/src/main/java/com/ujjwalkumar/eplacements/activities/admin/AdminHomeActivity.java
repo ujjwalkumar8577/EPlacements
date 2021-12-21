@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ujjwalkumar.eplacements.activities.common.NoticesActivity;
+import com.ujjwalkumar.eplacements.activities.common.StatisticsActivity;
 import com.ujjwalkumar.eplacements.activities.common.UpcomingCompaniesActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityAdminHomeBinding;
 
@@ -50,11 +51,11 @@ public class AdminHomeActivity extends AppCompatActivity {
         });
 
         binding.layoutMenu4.setOnClickListener(view -> {
-//            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+            startActivity(new Intent(this, StatisticsActivity.class));
         });
 
         binding.layoutMenu5.setOnClickListener(view -> {
-//            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
+            startActivity(new Intent(this, AdminAnnounceResultActivity.class));
         });
 
         binding.layoutMenu6.setOnClickListener(view -> {

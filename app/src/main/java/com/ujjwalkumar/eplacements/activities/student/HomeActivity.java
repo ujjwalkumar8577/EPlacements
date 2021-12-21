@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
-        EPlacementsUtil.showToast(this, "An error occured", R.drawable.outline_error_white_24dp);
+        EPlacementsUtil.showToast(this, "An error occured", R.drawable.outline_error_white_48dp);
 
         binding.imageViewAccount.setOnClickListener(view -> {
             startActivity(new Intent(this, MyAccountActivity.class));
