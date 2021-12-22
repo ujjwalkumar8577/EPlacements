@@ -39,7 +39,7 @@ import xute.markdeditor.utilities.FilePathUtils;
 public class AddExperienceActivity extends AppCompatActivity implements EditorControlBar.EditorControlListener {
 
     private static final int REQUEST_IMAGE_SELECTOR = 930;
-    private String companyName = "";
+    private String company_name = "";
     private String name = "";
     private ActivityAddExperienceBinding binding;
 
@@ -49,7 +49,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         binding = ActivityAddExperienceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        companyName = getIntent().getStringExtra("companyName");
+        company_name = getIntent().getStringExtra("company_name");
         name = getIntent().getStringExtra("name");
 
         binding.imageViewBack.setOnClickListener(view -> {
@@ -82,7 +82,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         ArrayList<DraftDataItemModel> contentTypes = new ArrayList<>();
         DraftDataItemModel heading = new DraftDataItemModel();
         heading.setItemType(DraftModel.ITEM_TYPE_TEXT);
-        heading.setContent(companyName);
+        heading.setContent(company_name);
         heading.setMode(MODE_PLAIN);
         heading.setStyle(H1);
 

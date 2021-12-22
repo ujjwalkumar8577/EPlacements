@@ -28,6 +28,12 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewBack"
         app:layout_constraintTop_toTopOf="@+id/imageViewBack" />
 
+
+<!--    <com.github.barteksc.pdfviewer.PDFView-->
+<!--        android:id="@+id/pdfView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
+
 <!--    <com.nayaastra.skewpdfview.SkewPdfView-->
 <!--        android:id="@+id/webView"-->
 <!--        android:layout_width="match_parent"-->

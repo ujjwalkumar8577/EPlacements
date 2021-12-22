@@ -1,7 +1,6 @@
 package com.ujjwalkumar.eplacements.adapters;
 
 import android.content.Context;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ujjwalkumar.eplacements.R;
+import com.ujjwalkumar.eplacements.utilities.Triplet;
 
 import java.util.ArrayList;
 
 public class SelectedStudentAdapter extends RecyclerView.Adapter<SelectedStudentAdapter.SelectedStudentViewHolder> {
 
     Context context;
-    ArrayList<Pair<String, String>> al;
+    ArrayList<Triplet> al;
 
-    public SelectedStudentAdapter(Context context, ArrayList<Pair<String, String>> al) {
+    public SelectedStudentAdapter(Context context, ArrayList<Triplet> al) {
         this.context = context;
         this.al = al;
     }
@@ -34,7 +34,7 @@ public class SelectedStudentAdapter extends RecyclerView.Adapter<SelectedStudent
 
     @Override
     public void onBindViewHolder(@NonNull SelectedStudentViewHolder holder, int position) {
-        Pair<String, String> obj = al.get(position);
+        Triplet obj = al.get(position);
         holder.textViewName.setText(obj.first);
         holder.textViewRegNo.setText(obj.second);
 
