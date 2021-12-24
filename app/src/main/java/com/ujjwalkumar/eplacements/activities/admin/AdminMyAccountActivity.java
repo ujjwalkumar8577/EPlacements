@@ -156,7 +156,7 @@ public class AdminMyAccountActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            photoURL = response.getJSONObject("user").getString("photo");
+                            photoURL = response.getJSONObject("user").getString("photoURL");
                             Glide.with(AdminMyAccountActivity.this)
                                     .load(photoURL)
                                     .placeholder(R.drawable.passportphoto)

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -45,24 +46,23 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
         binding = ActivityAdminAnnounceResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        companies.add("Google", "848");
-//        companies.add("Microsoft", "848");
-//        companies.add("Facebook", "848");
-//        companies.add("Amazon", "848");
-//        allStudents.add(new Pair<>("Aman Gupta", "20197698"));
-//        allStudents.add(new Pair<>("Anuj Mishra", "20191698"));
-//        allStudents.add(new Pair<>("Vishal Verma", "20197498"));
-//        allStudents.add(new Pair<>("Utkarsh Singh", "20191098"));
-
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
-        SelectedStudentAdapter adapter = new SelectedStudentAdapter(AdminAnnounceResultActivity.this, selectedStudents);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(AdminAnnounceResultActivity.this));
-        binding.recyclerView.setAdapter(adapter);
+        binding.imageViewBack.setOnClickListener(view -> {
+            super.onBackPressed();
+        });
 
-        binding.spinnerCompany.setOnItemClickListener((adapterView, view, i, l) -> {
-            company_id = companies.get(binding.spinnerCompany.getSelectedItemPosition()).second;
-            loadStudents();
+        binding.spinnerCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                company_id = companies.get(binding.spinnerCompany.getSelectedItemPosition()).second;
+                loadStudents();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
         });
 
         binding.autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -70,7 +70,9 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
             int pos = studentNames.indexOf(key);
             if(!selectedStudents.contains(allStudents.get(pos))) {
                 selectedStudents.add(allStudents.get(pos));
-                binding.recyclerView.getAdapter().notifyDataSetChanged();
+                SelectedStudentAdapter adapter = new SelectedStudentAdapter(AdminAnnounceResultActivity.this, selectedStudents);
+                binding.recyclerView.setLayoutManager(new LinearLayoutManager(AdminAnnounceResultActivity.this));
+                binding.recyclerView.setAdapter(adapter);
             }
             else {
                 Toast.makeText(AdminAnnounceResultActivity.this, "Already selected", Toast.LENGTH_SHORT).show();
@@ -88,24 +90,6 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
         loadCompanies();
     }
 
-    private void initializeFields() {
-        binding.animationViewLoading.pauseAnimation();
-        binding.animationViewLoading.setVisibility(View.GONE);
-
-        binding.spinnerCompany.setAdapter(new ArrayAdapter<String>(AdminAnnounceResultActivity.this, android.R.layout.simple_list_item_1, companyNames));
-
-        studentNames = new ArrayList<>();
-        for(Triplet triplet: allStudents) {
-            studentNames.add(triplet.second + " - " + triplet.first);
-        }
-        //Creating the instance of ArrayAdapter containing list of customers
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_selectable_list_item, studentNames);
-
-        //Getting the instance of AutoCompleteTextView
-        binding.autoCompleteTextView.setThreshold(2);                       //will start working from first character
-        binding.autoCompleteTextView.setAdapter(adapter);                   //setting the adapter data into the AutoCompleteTextView
-    }
-
     private void loadCompanies() {
         startLoading();
         String url = getString(R.string.base_url) + "admin/loadCompanies";
@@ -113,7 +97,16 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-
+                            JSONArray comp = response.getJSONArray("companies");
+                            companies = new ArrayList<>();
+                            companyNames = new ArrayList<>();
+                            for(int i=0; i<comp.length(); i++) {
+                                String id = comp.getJSONObject(i).getString("_id");
+                                String name = comp.getJSONObject(i).getString("name");
+                                companies.add(new Pair<>(name, id));
+                                companyNames.add(name);
+                            }
+                            binding.spinnerCompany.setAdapter(new ArrayAdapter<>(AdminAnnounceResultActivity.this, android.R.layout.simple_list_item_1, companyNames));
                         }
                         else
                             Toast.makeText(AdminAnnounceResultActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -141,7 +134,6 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
         JSONObject postData = new JSONObject();
         try {
             postData.put("company_id", company_id);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -150,7 +142,20 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-
+                            JSONArray stud = response.getJSONArray("students");
+                            allStudents = new ArrayList<>();
+                            selectedStudents = new ArrayList<>();
+                            studentNames = new ArrayList<>();
+                            for(int i=0; i<stud.length(); i++) {
+                                String name = stud.getJSONObject(i).getString("name");
+                                String reg_no = stud.getJSONObject(i).getString("reg_no");
+                                String reg_id = stud.getJSONObject(i).getString("_id");
+                                allStudents.add(new Triplet(name, reg_no, reg_id));
+                                studentNames.add(reg_no + " - " + name);
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_selectable_list_item, studentNames);
+                            binding.autoCompleteTextView.setThreshold(2);                       // will start working from first character
+                            binding.autoCompleteTextView.setAdapter(adapter);                   // setting the adapter data into the AutoCompleteTextView
                         }
                         else
                             Toast.makeText(AdminAnnounceResultActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -174,7 +179,7 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
     
     private void addResult() {
         startLoading();
-        String url = getString(R.string.base_url) + "admin/loadStudents";
+        String url = getString(R.string.base_url) + "admin/addResult";
         JSONObject postData = new JSONObject();
         try {
             JSONArray reg_nos = new JSONArray();
@@ -190,7 +195,7 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-
+                            Toast.makeText(AdminAnnounceResultActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                         else
                             Toast.makeText(AdminAnnounceResultActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();

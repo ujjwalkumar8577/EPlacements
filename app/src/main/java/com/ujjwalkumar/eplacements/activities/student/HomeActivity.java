@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
-        String url = getString(R.string.base_url) + "/student/checkEligibility";
+        String url = getString(R.string.base_url) + "student/checkEligibility";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
@@ -126,14 +126,11 @@ public class HomeActivity extends AppCompatActivity {
                                     .putExtra("company_location", company_location));
                         }
                         else if(response.getBoolean("success") && !response.getBoolean("isEligible")) {
-                            JSONObject company = response.getJSONObject("company");
-                            String company_id = company.getString("company_id");
-                            String company_name = company.getString("name");
-                            String company_profile = company.getString("job_profile");
-                            String company_location = company.getString("job_location");
+                            JSONObject experience = response.getJSONObject("experience");
+                            String company_name = experience.getString("company_name");
                             startActivity(new Intent(this, AddExperienceActivity.class)
                                     .putExtra("action", "edit")
-                                    .putExtra("data", user.getString("name", "")));
+                                    .putExtra("data", experience.toString()));
                         }
                         else
                             Toast.makeText(HomeActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import com.android.volley.toolbox.Volley;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivitySearchBatchmatesBinding;
 import com.ujjwalkumar.eplacements.utilities.Triplet;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +39,10 @@ public class SearchBatchmatesActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
+
+        binding.imageViewBack.setOnClickListener(view -> {
+            super.onBackPressed();
+        });
 
         binding.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -68,16 +75,27 @@ public class SearchBatchmatesActivity extends AppCompatActivity {
 
     private void loadStudents() {
         startLoading();
-        String url = getString(R.string.base_url) + "student/searchBatchmates";
+        String url = getString(R.string.base_url) + "student/searchStudent";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-
+                            JSONArray stud = response.getJSONArray("students");
+                            students = new ArrayList<>();
+                            studentNames = new ArrayList<>();
+                            for(int i=0; i<stud.length(); i++) {
+                                String name = stud.getJSONObject(i).getString("name");
+                                String reg_no = stud.getJSONObject(i).getString("reg_no");
+                                String company_name = stud.getJSONObject(i).getString("company_name");
+                                students.add(new Triplet(name, reg_no, company_name));
+                                studentNames.add(reg_no + " - " + name);
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_selectable_list_item, studentNames);
+                            binding.autoCompleteTextView.setThreshold(2);                       // will start working from first character
+                            binding.autoCompleteTextView.setAdapter(adapter);                   // setting the adapter data into the AutoCompleteTextView
                         }
                         else
                             Toast.makeText(SearchBatchmatesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        stopLoading();
                     } catch (Exception e) {
                         stopLoading();
                         e.printStackTrace();
@@ -98,9 +116,11 @@ public class SearchBatchmatesActivity extends AppCompatActivity {
     private void startLoading() {
         binding.detailsView.setVisibility(View.INVISIBLE);
         binding.animationViewLoading.setVisibility(View.VISIBLE);
+        binding.animationViewLoading.playAnimation();
     }
 
     private void stopLoading() {
+        binding.detailsView.setVisibility(View.VISIBLE);
         binding.animationViewLoading.setVisibility(View.GONE);
     }
 }

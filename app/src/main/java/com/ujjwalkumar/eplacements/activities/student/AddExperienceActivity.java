@@ -39,6 +39,7 @@ import xute.markdeditor.utilities.FilePathUtils;
 public class AddExperienceActivity extends AppCompatActivity implements EditorControlBar.EditorControlListener {
 
     private static final int REQUEST_IMAGE_SELECTOR = 930;
+    private String action = "";
     private String company_name = "";
     private String name = "";
     private ActivityAddExperienceBinding binding;
@@ -49,8 +50,26 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         binding = ActivityAddExperienceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        company_name = getIntent().getStringExtra("company_name");
-        name = getIntent().getStringExtra("name");
+        binding.mdEditor.configureEditor(
+                "https://api.hapramp.com/api/v2/",
+                "",
+                true,
+                "Start Here...",
+                BLOCKQUOTE
+        );
+
+        action = getIntent().getStringExtra("action");
+        if(action.equals("add")) {
+            company_name = getIntent().getStringExtra("company_name");
+            name = getIntent().getStringExtra("name");
+            binding.mdEditor.loadDraft(getDraftContent(""));
+        }
+        else {
+            binding.mdEditor.loadDraft(getDraftContent(""));
+        }
+
+        binding.controlBar.setEditorControlListener(this);
+        binding.controlBar.setEditor(binding.mdEditor);
 
         binding.imageViewBack.setOnClickListener(view -> {
             super.onBackPressed();
@@ -61,17 +80,6 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
             String json = new Gson().toJson(dm);
             Log.d("MarkDEditor", json);
         });
-
-        binding.mdEditor.configureEditor(
-                "https://api.hapramp.com/api/v2/",
-                "",
-                true,
-                "Start Here...",
-                BLOCKQUOTE
-        );
-        binding.mdEditor.loadDraft(getDraftContent(""));
-        binding.controlBar.setEditorControlListener(this);
-        binding.controlBar.setEditor(binding.mdEditor);
     }
 
     private DraftModel getDraftContent(String str) {
