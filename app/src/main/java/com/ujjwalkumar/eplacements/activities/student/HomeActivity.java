@@ -113,11 +113,9 @@ public class HomeActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success") && response.getBoolean("isEligible")) {
-                            JSONObject company = response.getJSONObject("company");
-                            String company_id = company.getString("company_id");
-                            String company_name = company.getString("name");
-                            String company_profile = company.getString("job_profile");
-                            String company_location = company.getString("job_location");
+                            String company_name = response.getString("company_name");
+                            String company_profile = response.getString("company_profile");
+                            String company_location = response.getString("company_location");
                             startActivity(new Intent(this, AddExperienceActivity.class)
                                     .putExtra("action", "add")
                                     .putExtra("name", user.getString("name", ""))
