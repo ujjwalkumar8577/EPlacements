@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -50,8 +51,10 @@ public class CompleteProfileActivity extends AppCompatActivity {
         if(studentProfile.status.equals("verified") || studentProfile.status.equals("placed"))
             binding.buttonUpdateProfile.setVisibility(View.GONE);
 
-        if(user.getString("type", "").equals("admin"))
+        if(user.getString("type", "").equals("admin")) {
             binding.buttonUpdateProfile.setVisibility(View.GONE);
+            binding.layout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        }
         else
             binding.buttonUpdateStatus.setVisibility(View.GONE);
 
@@ -88,10 +91,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
                     .show();
         });
 
-        if(studentProfile.remarks!=null)
-            initialiseValues();
-        else
-            getUser();
+        initialiseValues();
     }
 
     public void showDateTimePicker() {
@@ -294,10 +294,6 @@ public class CompleteProfileActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
-
-    private void getUser() {
-
     }
 
     private int search(String[] arr, String key) {

@@ -184,7 +184,7 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
         try {
             JSONArray reg_nos = new JSONArray();
             for(Triplet triplet: selectedStudents)
-                reg_nos.put(triplet.third);
+                reg_nos.put(triplet.second);
             postData.put("company_id", company_id);
             postData.put("reg_nos", reg_nos);
         } catch (JSONException e) {

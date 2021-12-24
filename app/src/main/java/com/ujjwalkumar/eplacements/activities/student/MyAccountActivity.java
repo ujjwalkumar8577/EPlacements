@@ -186,7 +186,7 @@ public class MyAccountActivity extends AppCompatActivity {
 
     private void showInformation() {
         binding.textViewName.setText(user.getString("name", ""));
-        binding.textViewRegNo   .setText(user.getString("id", ""));
+        binding.textViewRegNo.setText(user.getString("id", ""));
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
         String url = getString(R.string.base_url);
@@ -224,7 +224,8 @@ public class MyAccountActivity extends AppCompatActivity {
             }
         };
 
-        Volley.newRequestQueue(this).add(jsonObjectRequest); }
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
 
     private void changePassword(String currentPassword, String newPassword) {
         String url = getString(R.string.base_url) + "student/changePassword";

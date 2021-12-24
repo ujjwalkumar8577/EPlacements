@@ -99,7 +99,7 @@ public class AdminManageStudentsActivity extends AppCompatActivity {
                                 Student student = new Student(obj.getString("name"), obj.getString("reg_no"), degreeCourse, obj.getString("status"));
                                 al.add(student);
                             }
-                            StudentAdapter adapter = new StudentAdapter(AdminManageStudentsActivity.this, al);
+                            StudentAdapter adapter = new StudentAdapter(AdminManageStudentsActivity.this, al, user.getString("token", ""));
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(AdminManageStudentsActivity.this));
                             binding.recyclerView.setAdapter(adapter);
                         }

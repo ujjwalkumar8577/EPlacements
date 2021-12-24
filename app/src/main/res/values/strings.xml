@@ -38,7 +38,7 @@
     </string-array>
     <string-array name="status">
         <item>-SELECT-</item>
-        <item>Registerd</item>
+        <item>Registered</item>
         <item>Completed</item>
         <item>Verified</item>
         <item>Unverified</item>
