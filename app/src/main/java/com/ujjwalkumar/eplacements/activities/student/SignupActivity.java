@@ -37,19 +37,20 @@ public class SignupActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         binding.buttonSignup.setOnClickListener(view -> {
+            String name = binding.editTextName.getText().toString();
             String regno = binding.editTextRegistration.getText().toString();
             String password = binding.editTextPassword.getText().toString();
-            if(!regno.equals("")) {
-                if(!password.equals("")) {
-                    signupStudent(regno, password);
-                }
-                else {
-                    binding.editTextPassword.setError("Enter password");
-                }
-            }
-            else {
-                binding.editTextRegistration.setError("Enter registration no.");
-            }
+            if(!name.equals(""))
+                if(!regno.equals(""))
+                    if(!password.equals(""))
+                        signupStudent(name, regno, password);
+                    else
+                        binding.editTextPassword.setError("Enter password");
+                else
+                    binding.editTextRegistration.setError("Enter registration no.");
+            else
+                binding.editTextName.setError("Enter name");
+
         });
 
         binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
@@ -62,12 +63,13 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void signupStudent(String regno, String password) {
+    private void signupStudent(String name, String regno, String password) {
         binding.animationViewLoading.setVisibility(View.VISIBLE);
         binding.animationViewLoading.playAnimation();
         String url = getString(R.string.base_url) + "student/registerStudent";
         JSONObject postData = new JSONObject();
         try {
+            postData.put("name", name);
             postData.put("reg_no", regno);
             postData.put("password", password);
 
@@ -79,15 +81,13 @@ public class SignupActivity extends AppCompatActivity {
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            String name = response.getJSONObject("user").getString("name");
-                            String regno1 = response.getJSONObject("user").getString("reg_no");
                             String course = response.getJSONObject("user").getString("course");
                             String branch = response.getJSONObject("user").getString("branch");
                             String status = response.getJSONObject("user").getString("status");
                             String credits = response.getJSONObject("user").getString("credits");
                             String token = response.getString("token");
                             user.edit().putString("name", name).apply();
-                            user.edit().putString("id", regno1).apply();
+                            user.edit().putString("id", regno).apply();
                             user.edit().putString("course", course).apply();
                             user.edit().putString("branch", branch).apply();
                             user.edit().putString("status", status).apply();

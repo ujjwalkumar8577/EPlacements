@@ -1,5 +1,6 @@
 package com.ujjwalkumar.eplacements.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -100,6 +101,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
                             Intent intent = new Intent(context, CompleteProfileActivity.class);
                             intent.putExtra("userObj", gson.toJson(userObj));
                             context.startActivity(intent);
+                            ((Activity)context).finish();
                         }
                         else
                             Toast.makeText(context, response.getString("message"), Toast.LENGTH_SHORT).show();

@@ -2,6 +2,7 @@ package com.ujjwalkumar.eplacements.activities.common;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
+import com.ujjwalkumar.eplacements.activities.admin.AdminManageStudentsActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityCompleteProfileBinding;
 import com.ujjwalkumar.eplacements.models.StudentProfile;
 
@@ -52,6 +54,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
             binding.buttonUpdateProfile.setVisibility(View.GONE);
 
         if(user.getString("type", "").equals("admin")) {
+            binding.textViewTitle.setText(studentProfile.name);
             binding.buttonUpdateProfile.setVisibility(View.GONE);
             binding.layout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         }
@@ -59,7 +62,12 @@ public class CompleteProfileActivity extends AppCompatActivity {
             binding.buttonUpdateStatus.setVisibility(View.GONE);
 
         binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
+            if(user.getString("type", "").equals("admin")) {
+                startActivity(new Intent(this, AdminManageStudentsActivity.class));
+                finish();
+            }
+            else
+                super.onBackPressed();
         });
 
         binding.textViewDOB.setOnClickListener(view -> {
