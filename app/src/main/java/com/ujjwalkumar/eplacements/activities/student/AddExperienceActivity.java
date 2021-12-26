@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.databinding.ActivityAddExperienceBinding;
+import com.ujjwalkumar.eplacements.models.Experience;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,10 +50,10 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
 
     private static final int REQUEST_IMAGE_SELECTOR = 930;
     private String action = "";
-    private String company_name = "";
-    private String name = "";
+    private String data = "";
     private ActivityAddExperienceBinding binding;
     private SharedPreferences user;
+    private Experience experience;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +72,18 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         );
 
         action = getIntent().getStringExtra("action");
-        if(action.equals("add")) {
-            company_name = getIntent().getStringExtra("company_name");
-            name = getIntent().getStringExtra("name");
-            binding.mdEditor.loadDraft(getDraftContent(""));
-        }
-        else {
-            binding.mdEditor.loadDraft(getDraftContent(""));
+        data = getIntent().getStringExtra("data");
+        Gson gson = new Gson();
+        experience = gson.fromJson(data, Experience.class);
+
+        if(action.equals("view")) {
+            binding.textView3.setText(experience.getCompany_name());
+            binding.controlBar.setVisibility(View.GONE);
+            binding.buttonAdd.setVisibility(View.GONE);
+            binding.mdEditor.setFocusable(false);
         }
 
+        binding.mdEditor.loadDraft(getDraftContent());
         binding.controlBar.setEditorControlListener(this);
         binding.controlBar.setEditor(binding.mdEditor);
 
@@ -87,26 +91,22 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
 
         binding.buttonAdd.setOnClickListener(view -> {
             DraftModel dm = binding.mdEditor.getDraft();
-            String json = new Gson().toJson(dm);
-            addExperience(json);
+            experience.setDesc(gson.toJson(dm));
+            addExperience();
         });
     }
 
-    private DraftModel getDraftContent(String str) {
-        if(!str.equals("")) {
-            return (new Gson().fromJson(str, DraftModel.class));
-        }
-
+    private DraftModel getDraftContent() {
         ArrayList<DraftDataItemModel> contentTypes = new ArrayList<>();
         DraftDataItemModel heading = new DraftDataItemModel();
         heading.setItemType(DraftModel.ITEM_TYPE_TEXT);
-        heading.setContent(company_name);
+        heading.setContent(experience.getCompany_name());
         heading.setMode(MODE_PLAIN);
         heading.setStyle(H1);
 
         DraftDataItemModel sub_heading = new DraftDataItemModel();
         sub_heading.setItemType(DraftModel.ITEM_TYPE_TEXT);
-        sub_heading.setContent(name);
+        sub_heading.setContent(experience.getStudent_name());
         sub_heading.setMode(MODE_PLAIN);
         sub_heading.setStyle(H3);
 
@@ -114,9 +114,14 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         separator.setItemType(DraftModel.ITEM_TYPE_HR);
 
         DraftDataItemModel main_content = new DraftDataItemModel();
-        main_content.setItemType(DraftModel.ITEM_TYPE_TEXT);
-        main_content.setContent("");
-        main_content.setMode(MODE_PLAIN);
+        try {
+            main_content.setItemType(DraftModel.ITEM_TYPE_TEXT);
+            main_content.setContent(experience.getDesc());
+            main_content.setMode(MODE_PLAIN);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
 
         contentTypes.add(heading);
         contentTypes.add(sub_heading);
@@ -206,11 +211,11 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
     }
 
-    private void addExperience(String exp) {
+    private void addExperience() {
         String url = getString(R.string.base_url) + "student/addExperience";
         JSONObject postData = new JSONObject();
         try {
-            postData.put("experience", exp);
+            postData.put("experience", experience.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -224,6 +229,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
                         else
                             Toast.makeText(AddExperienceActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
+                        Toast.makeText(AddExperienceActivity.this, "Experience added successfully", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 },
