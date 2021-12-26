@@ -55,9 +55,7 @@ public class CompanyDetailsActivity extends AppCompatActivity {
             binding.buttonRegister.setVisibility(View.GONE);
         showInformation();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.buttonRegister.setOnClickListener(view -> {
             agreed = false;

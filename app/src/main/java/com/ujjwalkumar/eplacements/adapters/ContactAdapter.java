@@ -58,7 +58,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
         holder.textViewEmail.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:" + obj.getEmail()));
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL, obj.getEmail());
             if (intent.resolveActivity(context.getPackageManager()) != null)
                 context.startActivity(intent);
         });

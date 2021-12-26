@@ -51,9 +51,10 @@
         android:layout_width="30dp"
         android:layout_height="50dp"
         android:scaleType="centerInside"
+        app:tint="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bellfull" />
+        app:srcCompat="@drawable/bellempty" />
 
     <ScrollView
         android:layout_width="match_parent"

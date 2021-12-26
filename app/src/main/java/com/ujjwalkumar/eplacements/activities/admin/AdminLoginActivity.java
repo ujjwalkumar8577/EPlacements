@@ -52,9 +52,7 @@ public class AdminLoginActivity extends AppCompatActivity {
             }
         });
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.textViewHelp.setOnClickListener(view -> {
             Intent in = new Intent();

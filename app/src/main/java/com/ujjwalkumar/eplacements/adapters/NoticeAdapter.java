@@ -39,9 +39,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
         holder.textViewContent.setText(obj.getContent());
         holder.textViewTimestamp.setText(obj.getTimeString());
 
-        holder.layout.setOnClickListener(view -> {
-            holder.textViewContent.setMaxLines(1000);
-        });
+        holder.layout.setOnClickListener(view -> holder.textViewContent.setMaxLines(1000));
     }
 
     @Override

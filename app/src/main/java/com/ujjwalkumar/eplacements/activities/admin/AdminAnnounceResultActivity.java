@@ -48,9 +48,7 @@ public class AdminAnnounceResultActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.spinnerCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

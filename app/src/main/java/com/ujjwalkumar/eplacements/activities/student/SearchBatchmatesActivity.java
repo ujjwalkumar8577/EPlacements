@@ -40,9 +40,7 @@ public class SearchBatchmatesActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -67,6 +65,7 @@ public class SearchBatchmatesActivity extends AppCompatActivity {
             binding.textViewName.setText(students.get(pos).first);
             binding.textViewRegNo.setText(students.get(pos).second);
             binding.textViewCompany.setText(students.get(pos).third);
+            binding.autoCompleteTextView.setText("");
             stopLoading();
         });
 
@@ -93,6 +92,7 @@ public class SearchBatchmatesActivity extends AppCompatActivity {
                             ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_selectable_list_item, studentNames);
                             binding.autoCompleteTextView.setThreshold(2);                       // will start working from first character
                             binding.autoCompleteTextView.setAdapter(adapter);                   // setting the adapter data into the AutoCompleteTextView
+                            Toast.makeText(SearchBatchmatesActivity.this, "Search students", Toast.LENGTH_SHORT).show();
                         }
                         else
                             Toast.makeText(SearchBatchmatesActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();

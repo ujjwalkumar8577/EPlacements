@@ -54,9 +54,7 @@ public class NoticesActivity extends AppCompatActivity {
             binding.buttonAdd.setVisibility(View.GONE);
         showInformation();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.buttonAdd.setOnClickListener(view -> {
             LayoutInflater li = LayoutInflater.from(NoticesActivity.this);

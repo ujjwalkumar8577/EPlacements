@@ -33,9 +33,7 @@ public class HelpActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
         
         binding.buttonSend.setOnClickListener(view -> {
             String message = binding.editTextMessage.getText().toString();

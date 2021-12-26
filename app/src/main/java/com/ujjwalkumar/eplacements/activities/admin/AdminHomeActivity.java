@@ -40,37 +40,21 @@ public class AdminHomeActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
-        binding.imageViewAccount.setOnClickListener(view -> {
-            startActivity(new Intent(this, AdminMyAccountActivity.class));
-        });
+        binding.imageViewAccount.setOnClickListener(view -> startActivity(new Intent(this, AdminMyAccountActivity.class)));
 
-        binding.imageViewNotice.setOnClickListener(view -> {
-            startActivity(new Intent(this, NoticesActivity.class));
-        });
+        binding.imageViewNotice.setOnClickListener(view -> startActivity(new Intent(this, NoticesActivity.class)));
 
-        binding.layoutMenu1.setOnClickListener(view -> {
-            startActivity(new Intent(this, AdminAddCompanyActivity.class));
-        });
+        binding.layoutMenu1.setOnClickListener(view -> startActivity(new Intent(this, AdminAddCompanyActivity.class)));
 
-        binding.layoutMenu2.setOnClickListener(view -> {
-            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
-        });
+        binding.layoutMenu2.setOnClickListener(view -> startActivity(new Intent(this, UpcomingCompaniesActivity.class)));
 
-        binding.layoutMenu3.setOnClickListener(view -> {
-            startActivity(new Intent(this, AdminManageStudentsActivity.class));
-        });
+        binding.layoutMenu3.setOnClickListener(view -> startActivity(new Intent(this, AdminManageStudentsActivity.class)));
 
-        binding.layoutMenu4.setOnClickListener(view -> {
-            startActivity(new Intent(this, StatisticsActivity.class));
-        });
+        binding.layoutMenu4.setOnClickListener(view -> startActivity(new Intent(this, StatisticsActivity.class)));
 
-        binding.layoutMenu5.setOnClickListener(view -> {
-            startActivity(new Intent(this, AdminAnnounceResultActivity.class));
-        });
+        binding.layoutMenu5.setOnClickListener(view -> startActivity(new Intent(this, AdminAnnounceResultActivity.class)));
 
-        binding.layoutMenu6.setOnClickListener(view -> {
-            startActivity(new Intent(this, AdminResolveActivity.class));
-        });
+        binding.layoutMenu6.setOnClickListener(view -> startActivity(new Intent(this, AdminResolveActivity.class)));
     }
 
     private void showInformation() {

@@ -60,9 +60,7 @@ public class GrievanceAdapter extends RecyclerView.Adapter<GrievanceAdapter.Grie
         else
             holder.textViewResolve.setVisibility(View.VISIBLE);
 
-        holder.layout.setOnClickListener(view -> {
-            holder.textViewMessage.setMaxLines(1000);
-        });
+        holder.layout.setOnClickListener(view -> holder.textViewMessage.setMaxLines(1000));
 
         holder.textViewEmail.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -71,9 +69,7 @@ public class GrievanceAdapter extends RecyclerView.Adapter<GrievanceAdapter.Grie
                 context.startActivity(intent);
         });
 
-        holder.textViewResolve.setOnClickListener(view -> {
-            showInformation(holder.textViewResolve, obj.getId());
-        });
+        holder.textViewResolve.setOnClickListener(view -> showInformation(holder.textViewResolve, obj.getId()));
     }
 
     @Override

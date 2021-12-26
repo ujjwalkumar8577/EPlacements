@@ -72,9 +72,7 @@ public class MyAccountActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.buttonLogout.setOnClickListener(view -> {
             user.edit().clear().apply();

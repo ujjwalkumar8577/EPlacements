@@ -58,9 +58,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         String status = obj.getStatus().substring(0, 1).toUpperCase() + obj.getStatus().substring(1);
         holder.textViewStatus.setText(status);
 
-        holder.itemView.setOnClickListener(view -> {
-            getDetail(obj.getRegNo());
-        });
+        holder.itemView.setOnClickListener(view -> getDetail(obj.getRegNo()));
     }
 
     @Override

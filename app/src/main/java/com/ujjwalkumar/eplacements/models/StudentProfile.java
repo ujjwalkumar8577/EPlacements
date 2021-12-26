@@ -1,5 +1,7 @@
 package com.ujjwalkumar.eplacements.models;
 
+import java.lang.reflect.Field;
+
 public class StudentProfile {
     public String reg_no, name, course, branch, dob, email, skype_id, linkedin_id, gender, category,
     residential_status, guardian, present_address, permanent_address, maritial_status, state, country,
@@ -51,5 +53,28 @@ public class StudentProfile {
         this.percent_12 = percent_12;
         this.spi = spi;
         this.cpi = cpi;
+    }
+
+    public String validate() {
+        Field[] fields = StudentProfile.class.getDeclaredFields();
+        try {
+            for(Field field: fields) {
+                if(field.get(this)==null && !isIgnoredField(field.getName()))
+                    return (field.getName() + " required");
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "validated";
+    }
+
+    public static boolean isIgnoredField(String key) {
+        String[] IGNORED_FIELDS = {"status", "remarks", "credits", "spi"};
+        for(String str: IGNORED_FIELDS) {
+            if(key.equals(str))
+                return true;
+        }
+        return false;
     }
 }

@@ -83,9 +83,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         binding.controlBar.setEditorControlListener(this);
         binding.controlBar.setEditor(binding.mdEditor);
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.buttonAdd.setOnClickListener(view -> {
             DraftModel dm = binding.mdEditor.getDraft();

@@ -43,9 +43,7 @@ public class RegisteredCompaniesActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
     }
 
     private void showInformation() {

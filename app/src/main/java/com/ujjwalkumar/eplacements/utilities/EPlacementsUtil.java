@@ -48,9 +48,7 @@ public class EPlacementsUtil {
             context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
         });
 
-        textViewCancel.setOnClickListener(view -> {
-            alertDialog.dismiss();
-        });
+        textViewCancel.setOnClickListener(view -> alertDialog.dismiss());
     }
 
     public static void showToast(Context context, String message, int resID) {

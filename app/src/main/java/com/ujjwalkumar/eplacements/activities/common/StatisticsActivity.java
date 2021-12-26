@@ -50,9 +50,7 @@ public class StatisticsActivity extends AppCompatActivity {
         pie1 = AnyChart.pie();
         pie2 = AnyChart.pie();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -16,12 +16,14 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.activities.common.ContactsActivity;
 import com.ujjwalkumar.eplacements.activities.common.NoticesActivity;
 import com.ujjwalkumar.eplacements.activities.common.StatisticsActivity;
 import com.ujjwalkumar.eplacements.activities.common.UpcomingCompaniesActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityHomeBinding;
+import com.ujjwalkumar.eplacements.models.Experience;
 
 import org.json.JSONObject;
 
@@ -45,47 +47,27 @@ public class HomeActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
-//        EPlacementsUtil.showToast(this, "An error occured", R.drawable.outline_error_white_48dp);
+        updateInformation();
 
-        binding.imageViewAccount.setOnClickListener(view -> {
-            startActivity(new Intent(this, MyAccountActivity.class));
-        });
+        binding.imageViewAccount.setOnClickListener(view -> startActivity(new Intent(this, MyAccountActivity.class)));
 
-        binding.imageViewNotice.setOnClickListener(view -> {
-            startActivity(new Intent(this, NoticesActivity.class));
-        });
+        binding.imageViewNotice.setOnClickListener(view -> startActivity(new Intent(this, NoticesActivity.class)));
 
-        binding.layoutMenu1.setOnClickListener(view -> {
-            startActivity(new Intent(this, UpcomingCompaniesActivity.class));
-        });
+        binding.layoutMenu1.setOnClickListener(view -> startActivity(new Intent(this, UpcomingCompaniesActivity.class)));
 
-        binding.layoutMenu2.setOnClickListener(view -> {
-            startActivity(new Intent(this, RegisteredCompaniesActivity.class));
-        });
+        binding.layoutMenu2.setOnClickListener(view -> startActivity(new Intent(this, RegisteredCompaniesActivity.class)));
 
-        binding.layoutMenu3.setOnClickListener(view -> {
-            startActivity(new Intent(this, ViewExperienceActivity.class));
-        });
+        binding.layoutMenu3.setOnClickListener(view -> startActivity(new Intent(this, ViewExperienceActivity.class)));
 
-        binding.layoutMenu4.setOnClickListener(view -> {
-            checkEligibility();
-        });
+        binding.layoutMenu4.setOnClickListener(view -> checkEligibility());
 
-        binding.layoutMenu5.setOnClickListener(view -> {
-            startActivity(new Intent(this, ContactsActivity.class));
-        });
+        binding.layoutMenu5.setOnClickListener(view -> startActivity(new Intent(this, ContactsActivity.class)));
 
-        binding.layoutMenu6.setOnClickListener(view -> {
-            startActivity(new Intent(this, HelpActivity.class));
-        });
+        binding.layoutMenu6.setOnClickListener(view -> startActivity(new Intent(this, HelpActivity.class)));
 
-        binding.layoutMenu7.setOnClickListener(view -> {
-            startActivity(new Intent(this, StatisticsActivity.class));
-        });
+        binding.layoutMenu7.setOnClickListener(view -> startActivity(new Intent(this, StatisticsActivity.class)));
 
-        binding.layoutMenu8.setOnClickListener(view -> {
-            startActivity(new Intent(this, SearchBatchmatesActivity.class));
-        });
+        binding.layoutMenu8.setOnClickListener(view -> startActivity(new Intent(this, SearchBatchmatesActivity.class)));
     }
 
     private void showInformation() {
@@ -97,6 +79,44 @@ public class HomeActivity extends AppCompatActivity {
             binding.imageViewVerified.setVisibility(View.GONE);
         else
             binding.imageViewVerified.setVisibility(View.VISIBLE);
+    }
+
+    private void updateInformation() {
+        String url = getString(R.string.base_url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        if(response.getBoolean("success")) {
+                            String name = response.getJSONObject("user").getString("name");
+                            String regno = response.getJSONObject("user").getString("reg_no");
+                            String course = response.getJSONObject("user").getString("course");
+                            String branch = response.getJSONObject("user").getString("branch");
+                            String status = response.getJSONObject("user").getString("status");
+                            String credits = response.getJSONObject("user").getString("credits");
+                            user.edit().putString("name", name);
+                            user.edit().putString("reg_no", regno);
+                            user.edit().putString("course", course);
+                            user.edit().putString("branch", branch);
+                            user.edit().putString("status", status);
+                            user.edit().putString("credits", credits);
+                            showInformation();
+                        }
+                        else
+                            Toast.makeText(HomeActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization", user.getString("token", ""));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
     private void checkEligibility() {
@@ -116,16 +136,14 @@ public class HomeActivity extends AppCompatActivity {
                             String company_name = response.getString("company_name");
                             String company_profile = response.getString("company_profile");
                             String company_location = response.getString("company_location");
+
+                            Experience experience = new Experience("2021", user.getString("id", ""), user.getString("name", ""), company_name, company_profile, company_location, "" ,5, 1640079614360L);
                             startActivity(new Intent(this, AddExperienceActivity.class)
                                     .putExtra("action", "add")
-                                    .putExtra("name", user.getString("name", ""))
-                                    .putExtra("company_name", company_name)
-                                    .putExtra("company_profile", company_profile)
-                                    .putExtra("company_location", company_location));
+                                    .putExtra("data", new Gson().toJson(experience)));
                         }
                         else if(response.getBoolean("success") && !response.getBoolean("isEligible")) {
                             JSONObject experience = response.getJSONObject("experience");
-                            String company_name = experience.getString("company_name");
                             startActivity(new Intent(this, AddExperienceActivity.class)
                                     .putExtra("action", "edit")
                                     .putExtra("data", experience.toString()));

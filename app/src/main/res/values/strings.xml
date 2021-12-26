@@ -42,6 +42,5 @@
         <item>Completed</item>
         <item>Verified</item>
         <item>Unverified</item>
-        <item>Placed</item>
     </string-array>
 </resources>

@@ -47,9 +47,7 @@ public class AdminResolveActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         showInformation();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.imageViewFilter.setOnClickListener(view -> {
             statusFilter = "";
@@ -64,9 +62,7 @@ public class AdminResolveActivity extends AppCompatActivity {
                         else
                             statusFilter = "unresolved";
                     })
-                    .setPositiveButton("Yes", (dialog, id) -> {
-                        showInformation();
-                    })
+                    .setPositiveButton("Yes", (dialog, id) -> showInformation())
                     .setNegativeButton("No", (dialog, id) -> dialog.cancel())
                     .show();
         });

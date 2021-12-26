@@ -38,9 +38,7 @@ public class ContactsActivity extends AppCompatActivity {
         EPlacementsUtil.checkInternetConnection(this);
         showInformation();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
     }
 
     private void showInformation() {

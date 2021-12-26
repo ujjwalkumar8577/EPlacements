@@ -21,6 +21,7 @@ import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.activities.admin.AdminManageStudentsActivity;
 import com.ujjwalkumar.eplacements.databinding.ActivityCompleteProfileBinding;
 import com.ujjwalkumar.eplacements.models.StudentProfile;
+import com.ujjwalkumar.eplacements.utilities.EPlacementsUtil;
 
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
 
     private boolean dateSet = false;
     private int select = -1;
+    private int select2 = -1;
     private ActivityCompleteProfileBinding binding;
     private SharedPreferences user;
     private StudentProfile studentProfile;
@@ -58,8 +60,10 @@ public class CompleteProfileActivity extends AppCompatActivity {
             binding.buttonUpdateProfile.setVisibility(View.GONE);
             binding.layout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         }
-        else
+        else {
             binding.buttonUpdateStatus.setVisibility(View.GONE);
+            binding.buttonReduceCredits.setVisibility(View.GONE);
+        }
 
         binding.imageViewBack.setOnClickListener(view -> {
             if(user.getString("type", "").equals("admin")) {
@@ -70,9 +74,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
                 super.onBackPressed();
         });
 
-        binding.textViewDOB.setOnClickListener(view -> {
-            showDateTimePicker();
-        });
+        binding.textViewDOB.setOnClickListener(view -> showDateTimePicker());
 
         binding.checkBoxSame.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
@@ -94,6 +96,22 @@ public class CompleteProfileActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", (dialog, id) -> {
                         if(select>0)
                             updateStatus(arr[select], "");
+                    })
+                    .setNegativeButton("No", (dialog, id) -> dialog.cancel())
+                    .show();
+        });
+
+        binding.buttonReduceCredits.setOnClickListener(view -> {
+            Toast.makeText(CompleteProfileActivity.this, "Current credits is " + studentProfile.credits, Toast.LENGTH_SHORT).show();
+            String[] arr = {"1", "2", "3", "4", "5"};
+            select2 = search(arr, studentProfile.status);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Deduct Credits")
+                    .setCancelable(true)
+                    .setSingleChoiceItems(arr, select2, (dialog, which) -> select2 = which)
+                    .setPositiveButton("Yes", (dialog, id) -> {
+                        if(select2>0)
+                            reduceCredit(Integer.parseInt(arr[select2]));
                     })
                     .setNegativeButton("No", (dialog, id) -> dialog.cancel())
                     .show();
@@ -198,6 +216,11 @@ public class CompleteProfileActivity extends AppCompatActivity {
     }
 
     public void updateStudent() {
+        if(!studentProfile.validate().equals("validated")) {
+            EPlacementsUtil.showToast(this, studentProfile.validate(), R.drawable.outline_error_white_48dp);
+            return;
+        }
+
         String url = getString(R.string.base_url) + "student/updateStudent";
         JSONObject postData = new JSONObject();
         try {
@@ -237,7 +260,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
         String url = getString(R.string.base_url) + "admin/setStatus";
         JSONObject postData = new JSONObject();
         try {
-            studentProfile.status = updatedStatus;
+            studentProfile.status = updatedStatus.toLowerCase();
             studentProfile.remarks = remarks;
             postData.put("reg_no", studentProfile.reg_no);
             postData.put("set_status", studentProfile.status);
@@ -285,8 +308,10 @@ public class CompleteProfileActivity extends AppCompatActivity {
                     try {
                         if(response.getBoolean("success")) {
                             studentProfile.credits = response.getInt("final_credits");
+                            Toast.makeText(CompleteProfileActivity.this, "Credits reduced to " + studentProfile.credits, Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(CompleteProfileActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(CompleteProfileActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

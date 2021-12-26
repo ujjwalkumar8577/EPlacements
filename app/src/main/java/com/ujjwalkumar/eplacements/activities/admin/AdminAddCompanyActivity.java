@@ -44,9 +44,7 @@ public class AdminAddCompanyActivity extends AppCompatActivity {
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
         set = new HashSet<>();
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
         binding.buttonAdd.setOnClickListener(view -> {
             name = binding.editTextName.getText().toString();
@@ -156,9 +154,7 @@ public class AdminAddCompanyActivity extends AppCompatActivity {
                 set.remove(binding.checkBox9.getText().toString());
         });
 
-        binding.textViewDeadline.setOnClickListener(view -> {
-            showDateTimePicker();
-        });
+        binding.textViewDeadline.setOnClickListener(view -> showDateTimePicker());
     }
 
     private void initializeFields() {

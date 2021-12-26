@@ -22,17 +22,9 @@ public class ViewPdfActivity extends AppCompatActivity {
         String BASE_URL = "https://drive.google.com/viewerng/viewer?embedded=true&url=";
         String url = getIntent().getStringExtra("url");
 
-        binding.imageViewBack.setOnClickListener(view -> {
-            super.onBackPressed();
-        });
+        binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
-//        binding.webView.getSettings().setJavaScriptEnabled(true);
-//        binding.webView.loadUrl(BASE_URL+url);
-
-//        binding.webView.loadPdf(url);
-
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setData(Uri.parse(url));
-//        startActivity(intent);
+        binding.webView.getSettings().setJavaScriptEnabled(true);
+        binding.webView.loadUrl(BASE_URL+url);
     }
 }
