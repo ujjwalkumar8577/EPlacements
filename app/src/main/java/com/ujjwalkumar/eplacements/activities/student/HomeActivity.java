@@ -138,13 +138,13 @@ public class HomeActivity extends AppCompatActivity {
                             String company_location = response.getString("company_location");
 
                             Experience experience = new Experience("2021", user.getString("id", ""), user.getString("name", ""), company_name, company_profile, company_location, "" ,5, 1640079614360L);
-                            startActivity(new Intent(this, AddExperienceActivity.class)
+                            startActivity(new Intent(this, EditExperienceActivity.class)
                                     .putExtra("action", "add")
                                     .putExtra("data", new Gson().toJson(experience)));
                         }
                         else if(response.getBoolean("success") && !response.getBoolean("isEligible")) {
                             JSONObject experience = response.getJSONObject("experience");
-                            startActivity(new Intent(this, AddExperienceActivity.class)
+                            startActivity(new Intent(this, EditExperienceActivity.class)
                                     .putExtra("action", "edit")
                                     .putExtra("data", experience.toString()));
                         }

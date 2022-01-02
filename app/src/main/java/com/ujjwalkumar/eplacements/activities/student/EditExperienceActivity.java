@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ import xute.markdeditor.datatype.DraftDataItemModel;
 import xute.markdeditor.models.DraftModel;
 import xute.markdeditor.utilities.FilePathUtils;
 
-public class AddExperienceActivity extends AppCompatActivity implements EditorControlBar.EditorControlListener {
+public class EditExperienceActivity extends AppCompatActivity implements EditorControlBar.EditorControlListener {
 
     private static final int REQUEST_IMAGE_SELECTOR = 930;
     private String action = "";
@@ -63,6 +64,11 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
 
         user = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
+        action = getIntent().getStringExtra("action");
+        data = getIntent().getStringExtra("data");
+        Gson gson = new Gson();
+        experience = gson.fromJson(data, Experience.class);
+
         binding.mdEditor.configureEditor(
                 "https://api.hapramp.com/api/v2/",
                 "",
@@ -71,21 +77,18 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
                 BLOCKQUOTE
         );
 
-        action = getIntent().getStringExtra("action");
-        data = getIntent().getStringExtra("data");
-        Gson gson = new Gson();
-        experience = gson.fromJson(data, Experience.class);
-
         if(action.equals("view")) {
             binding.textView3.setText(experience.getCompany_name());
             binding.controlBar.setVisibility(View.GONE);
             binding.buttonAdd.setVisibility(View.GONE);
-            binding.mdEditor.setFocusable(false);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        }
+        else {
+            binding.controlBar.setEditorControlListener(this);
+            binding.controlBar.setEditor(binding.mdEditor);
         }
 
         binding.mdEditor.loadDraft(getDraftContent());
-        binding.controlBar.setEditorControlListener(this);
-        binding.controlBar.setEditor(binding.mdEditor);
 
         binding.imageViewBack.setOnClickListener(view -> super.onBackPressed());
 
@@ -96,7 +99,17 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     private DraftModel getDraftContent() {
+        if(action.equals("view") || action.equals("edit")) {
+            Gson gson = new Gson();
+            return gson.fromJson(experience.getDesc(), DraftModel.class);
+        }
+
         ArrayList<DraftDataItemModel> contentTypes = new ArrayList<>();
         DraftDataItemModel heading = new DraftDataItemModel();
         heading.setItemType(DraftModel.ITEM_TYPE_TEXT);
@@ -136,7 +149,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         if (requestCode == REQUEST_IMAGE_SELECTOR) {
             if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
                 Uri uri = data.getData();
-                String filePath = FilePathUtils.getPath(AddExperienceActivity.this, uri);
+                String filePath = FilePathUtils.getPath(EditExperienceActivity.this, uri);
                 addImage(filePath);
             }
         }
@@ -153,7 +166,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openGallery();
             } else {
-                Toast.makeText(AddExperienceActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditExperienceActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -176,14 +189,15 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
 
     @Override
     public void onInsertImageClicked() {
-        openGallery();
+        Toast.makeText(EditExperienceActivity.this, "Add image under development", Toast.LENGTH_SHORT).show();
+//        openGallery();
     }
 
     @Override
     public void onInserLinkClicked() {
-        LayoutInflater li = LayoutInflater.from(AddExperienceActivity.this);
+        LayoutInflater li = LayoutInflater.from(EditExperienceActivity.this);
         View promptsView = li.inflate(R.layout.dialog_add_link, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddExperienceActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EditExperienceActivity.this);
         alertDialogBuilder.setView(promptsView);
 
         final EditText userInput1 = promptsView.findViewById(R.id.editTextDialogUserInput1);
@@ -196,7 +210,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
                             String text = userInput1.getText().toString();
                             String url = userInput2.getText().toString();
                             if(text.equals("") || url.equals(""))
-                                Toast.makeText(AddExperienceActivity.this, "Empty text or link", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditExperienceActivity.this, "Empty text or link", Toast.LENGTH_SHORT).show();
                             else
                                 binding.mdEditor.addLink(text, url);
                         })
@@ -206,7 +220,7 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
-        alertDialog.getWindow().setBackgroundDrawable(AppCompatResources.getDrawable(AddExperienceActivity.this, R.color.gray));
+        alertDialog.getWindow().setBackgroundDrawable(AppCompatResources.getDrawable(EditExperienceActivity.this, R.color.gray));
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
         alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
     }
@@ -215,7 +229,15 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
         String url = getString(R.string.base_url) + "student/addExperience";
         JSONObject postData = new JSONObject();
         try {
-            postData.put("experience", experience.toString());
+            postData.put("year", experience.getYear());
+            postData.put("reg_no", experience.getReg_no());
+            postData.put("student_name", experience.getStudent_name());
+            postData.put("company_name", experience.getCompany_name());
+            postData.put("job_profile", experience.getJob_profile());
+            postData.put("job_location", experience.getJob_location());
+            postData.put("desc", experience.getDesc());
+            postData.put("rating", experience.getRating());
+            postData.put("timestamp", experience.getTimestamp());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -224,16 +246,15 @@ public class AddExperienceActivity extends AppCompatActivity implements EditorCo
                 response -> {
                     try {
                         if(response.getBoolean("success")) {
-                            Toast.makeText(AddExperienceActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditExperienceActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                         else
-                            Toast.makeText(AddExperienceActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditExperienceActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
-                        Toast.makeText(AddExperienceActivity.this, "Experience added successfully", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(AddExperienceActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
+                error -> Toast.makeText(EditExperienceActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

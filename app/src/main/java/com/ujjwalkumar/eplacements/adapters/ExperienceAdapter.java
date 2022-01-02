@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.ujjwalkumar.eplacements.R;
-import com.ujjwalkumar.eplacements.activities.student.AddExperienceActivity;
+import com.ujjwalkumar.eplacements.activities.student.EditExperienceActivity;
 import com.ujjwalkumar.eplacements.models.Experience;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Ex
 
         holder.layout.setOnClickListener(view -> {
             Gson gson = new Gson();
-            Intent intent = new Intent(context, AddExperienceActivity.class);
+            Intent intent = new Intent(context, EditExperienceActivity.class);
             intent.putExtra("action", "view");
             intent.putExtra("data", gson.toJson(obj));
             context.startActivity(intent);

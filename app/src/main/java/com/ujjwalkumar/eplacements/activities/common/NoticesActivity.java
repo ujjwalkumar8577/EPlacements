@@ -86,6 +86,10 @@ public class NoticesActivity extends AppCompatActivity {
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
             alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
         });
+
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            showInformation();
+        });
     }
 
     private void showInformation() {
@@ -182,5 +186,6 @@ public class NoticesActivity extends AppCompatActivity {
         binding.shimmerFrameLayout.stopShimmer();
         binding.shimmerFrameLayout.setVisibility(View.GONE);
         binding.recyclerView.setVisibility(View.VISIBLE);
+        binding.swipeRefreshLayout.setRefreshing(false);
     }
 }

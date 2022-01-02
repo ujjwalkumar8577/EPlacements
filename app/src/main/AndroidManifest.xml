@@ -26,7 +26,7 @@
             android:name=".activities.admin.AdminResolveActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.student.AddExperienceActivity"
+            android:name=".activities.student.EditExperienceActivity"
             android:exported="false" />
         <activity
             android:name=".activities.common.StatisticsActivity"

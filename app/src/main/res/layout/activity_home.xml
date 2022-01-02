@@ -75,7 +75,7 @@
                 android:id="@+id/layoutBanner"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@drawable/bg_input"
+                android:background="@drawable/bg_neumorphism"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -146,7 +146,7 @@
                     android:layout_marginStart="36dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -173,7 +173,7 @@
                     android:layout_height="128dp"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -209,7 +209,7 @@
                     android:layout_marginStart="36dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -236,7 +236,7 @@
                     android:layout_height="128dp"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -272,7 +272,7 @@
                     android:layout_marginStart="36dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -299,7 +299,7 @@
                     android:layout_height="128dp"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -335,7 +335,7 @@
                     android:layout_marginStart="36dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -362,7 +362,7 @@
                     android:layout_height="128dp"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_input"
+                    android:background="@drawable/bg_neumorphism"
                     android:gravity="center"
                     android:orientation="vertical">
 
