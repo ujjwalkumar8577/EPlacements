@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ujjwalkumar.eplacements.R;
 import com.ujjwalkumar.eplacements.activities.admin.AdminHomeActivity;
 import com.ujjwalkumar.eplacements.activities.student.HomeActivity;
-import com.ujjwalkumar.eplacements.activities.student.LoginActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                     String token = user.getString("token", "");
                     String type = user.getString("type", "");
                     if(token.equals(""))
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        startActivity(new Intent(MainActivity.this, OnboardingActivity.class));
                     else if(type.equals("admin"))
                         startActivity(new Intent(MainActivity.this, AdminHomeActivity.class));
                     else

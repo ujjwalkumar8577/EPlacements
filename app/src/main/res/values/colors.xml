@@ -13,6 +13,8 @@
     <color name="blue">#057EE6</color>
     <color name="shimmerBg">#DDDDDD</color>
     <color name="toastBg">#DFE31953</color>
+    <color name="onboardBg1">#E2F0F9</color>
+    <color name="onboardBg2">#B0DDE4</color>
     <color name="colorPrimary">#284257</color>
     <color name="colorPrimaryDark">#253A4B</color>
     <color name="colorAccent">#E31953</color>

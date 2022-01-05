@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EPlacements">
         <activity
+            android:name=".activities.common.OnboardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.student.SearchBatchmatesActivity"
             android:exported="false" />
         <activity
