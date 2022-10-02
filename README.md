@@ -10,7 +10,7 @@ Demo Video
 - [Google Drive Link](https://drive.google.com/file/d/1BcqZVlzFp-6cE2klFD4JgjiiIKpmYrKA/view?usp=sharing)
 
 Install app from APK
-- [Google Drive Link](https://drive.google.com/file/d/1-9jo9oE-cWkUEIDdo2duK30wFj49KL3X/view?usp=sharing)
+- [Google Drive Link](https://drive.google.com/file/d/1exhedy2NSt58_2pLpJaTL3bZmTKghXD9/view?usp=sharing)
 
 ## Features
 - Display information of student.
