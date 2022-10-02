@@ -41,6 +41,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
         paperOnboardingFragment.setOnRightOutListener(() -> {
             startActivity(new Intent(OnboardingActivity.this, LoginActivity.class));
+            finish();
         });
     }
 }
